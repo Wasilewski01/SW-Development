@@ -2114,12 +2114,13 @@ function Meta({ label, value }: { label: string; value: string }) {
 const CONTACT_EMAIL = 'hello@swndevelopment.pl'
 
 /**
- * Formspree endpoint, e.g. https://formspree.io/f/xyzabcd — set
- * VITE_FORMSPREE_ENDPOINT in the deployment environment. Without it the form
- * falls back to opening the visitor's mail client, so the dialog is never a
- * dead end.
+ * Web3Forms access key (web3forms.com, tied to CONTACT_EMAIL) — set
+ * VITE_WEB3FORMS_KEY in the deployment environment. The key is meant to be
+ * public: it can only deliver to that one inbox. Without it the form falls
+ * back to opening the visitor's mail client, so the dialog is never a dead end.
  */
-const FORM_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT as string | undefined
+const FORM_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 
 type SendState = 'idle' | 'sending' | 'sent' | 'mailed' | 'failed'
 
@@ -2143,13 +2144,18 @@ function ContactDialog({
     const form = e.currentTarget
     const data = new FormData(form)
 
-    if (!FORM_ENDPOINT) {
+    if (!FORM_KEY) {
       const subject = encodeURIComponent(`${t.formTitle[lang]} — ${data.get('name') ?? ''}`)
       const body = encodeURIComponent(`${data.get('message') ?? ''}\n\n${data.get('email') ?? ''}`)
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
       setState('mailed')
       return
     }
+
+    // The visitor's address goes in as `email`, which Web3Forms uses as Reply-To.
+    data.set('access_key', FORM_KEY)
+    data.set('subject', `SWN Development — ${data.get('name') ?? ''}`)
+    data.set('from_name', 'swndevelopment.pl')
 
     setState('sending')
     try {
@@ -2158,7 +2164,8 @@ function ContactDialog({
         headers: { Accept: 'application/json' },
         body: data,
       })
-      setState(response.ok ? 'sent' : 'failed')
+      const result = (await response.json().catch(() => null)) as { success?: boolean } | null
+      setState(response.ok && result?.success ? 'sent' : 'failed')
     } catch {
       setState('failed')
     }
@@ -2222,8 +2229,8 @@ function ContactDialog({
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{t.formBody[lang]}</p>
 
             <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-3">
-              {/* Bot bait: Formspree drops anything that fills this in. */}
-              <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+              {/* Bot bait: Web3Forms drops anything that ticks this. */}
+              <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
               <div className="relative">
                 <input
