@@ -2111,7 +2111,7 @@ function Meta({ label, value }: { label: string; value: string }) {
 
 /* ---------------------------------------------------------- ContactForm */
 
-const CONTACT_EMAIL = 'hello@swdevelopment.dev'
+const CONTACT_EMAIL = 'hello@swndevelopment.pl'
 
 /**
  * Formspree endpoint, e.g. https://formspree.io/f/xyzabcd — set
