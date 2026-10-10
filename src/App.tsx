@@ -2114,21 +2114,13 @@ function Meta({ label, value }: { label: string; value: string }) {
 const CONTACT_EMAIL = 'hello@swndevelopment.pl'
 
 /**
- * EmailJS (emailjs.com): the service sends through the studio inbox and the
- * template lays out the message. All three ids are public by design; the
- * template's own settings decide where mail goes. Until they are filled in
- * the form falls back to opening the visitor's mail client, so the dialog is
- * never a dead end.
- *
- * Template variables: {{name}}, {{email}}, {{message}}. Set the template's
- * Reply-To to {{email}} so "Reply" answers the visitor.
+ * Web3Forms access key (web3forms.com, tied to CONTACT_EMAIL) — set
+ * VITE_WEB3FORMS_KEY in the deployment environment. The key is meant to be
+ * public: it can only deliver to that one inbox. Without it the form falls
+ * back to opening the visitor's mail client, so the dialog is never a dead end.
  */
-const EMAILJS = {
-  serviceId: '',
-  templateId: '',
-  publicKey: '',
-}
-const EMAILJS_ENDPOINT = 'https://api.emailjs.com/api/v1.0/email/send'
+const FORM_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 
 type SendState = 'idle' | 'sending' | 'sent' | 'mailed' | 'failed'
 
@@ -2152,13 +2144,7 @@ function ContactDialog({
     const form = e.currentTarget
     const data = new FormData(form)
 
-    // Bot bait: only a script ticks the hidden box. Pretend it went through.
-    if (data.get('botcheck')) {
-      setState('sent')
-      return
-    }
-
-    if (!EMAILJS.serviceId || !EMAILJS.templateId || !EMAILJS.publicKey) {
+    if (!FORM_KEY) {
       const subject = encodeURIComponent(`${t.formTitle[lang]} — ${data.get('name') ?? ''}`)
       const body = encodeURIComponent(`${data.get('message') ?? ''}\n\n${data.get('email') ?? ''}`)
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
@@ -2166,23 +2152,20 @@ function ContactDialog({
       return
     }
 
+    // The visitor's address goes in as `email`, which Web3Forms uses as Reply-To.
+    data.set('access_key', FORM_KEY)
+    data.set('subject', `SWN Development — ${data.get('name') ?? ''}`)
+    data.set('from_name', 'swndevelopment.pl')
+
     setState('sending')
     try {
-      const response = await fetch(EMAILJS_ENDPOINT, {
+      const response = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          service_id: EMAILJS.serviceId,
-          template_id: EMAILJS.templateId,
-          user_id: EMAILJS.publicKey,
-          template_params: {
-            name: data.get('name') ?? '',
-            email: data.get('email') ?? '',
-            message: data.get('message') ?? '',
-          },
-        }),
+        headers: { Accept: 'application/json' },
+        body: data,
       })
-      setState(response.ok ? 'sent' : 'failed')
+      const result = (await response.json().catch(() => null)) as { success?: boolean } | null
+      setState(response.ok && result?.success ? 'sent' : 'failed')
     } catch {
       setState('failed')
     }
@@ -2246,7 +2229,7 @@ function ContactDialog({
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">{t.formBody[lang]}</p>
 
             <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-3">
-              {/* Bot bait: a person never sees this box, so whoever ticks it is a script. */}
+              {/* Bot bait: Web3Forms drops anything that ticks this. */}
               <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
               <div className="relative">
