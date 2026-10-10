@@ -1063,17 +1063,20 @@ function Header({
     <>
       <header className="fixed inset-x-0 top-0 z-50 bg-[var(--color-canvas)]/90 backdrop-blur-md">
         <div className="mx-auto flex h-[60px] w-full max-w-6xl items-center gap-6 px-4 sm:px-8 xl:gap-5">
-          {/* Brand: the mark alone; on hover its line stretches */}
+          {/* Brand: the mark with the rest of the name beside it; on hover its line stretches */}
           <a
             href="#hero"
             onClick={(e) => goToSection(e, 'hero')}
             aria-label={t.brand[lang]}
             className="group/brand flex min-h-11 shrink-0 items-center"
           >
-            <SWMark
-              className="text-[19px] text-[var(--color-ink)]"
-              line="h-[1.5px] transition-[width] duration-300 ease-out group-hover/brand:w-[calc(100%+0.5em)]"
-            />
+            <span className="flex items-baseline gap-2" aria-hidden="true">
+              <SWMark
+                className="text-[19px] text-[var(--color-ink)]"
+                line="h-[1.5px] transition-[width] duration-300 ease-out group-hover/brand:w-[calc(100%+0.5em)]"
+              />
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">Development</span>
+            </span>
           </a>
 
           <nav
@@ -1191,7 +1194,10 @@ function Header({
             className="fixed inset-0 z-[70] flex flex-col bg-[var(--color-canvas)] xl:hidden"
           >
             <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-[var(--color-line)] px-4 sm:px-8">
-              <SWMark className="text-[19px] text-[var(--color-ink)]" />
+              <span className="flex items-baseline gap-2">
+                <SWMark className="text-[19px] text-[var(--color-ink)]" />
+                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">Development</span>
+              </span>
               <button
                 onClick={() => setMenuOpen(false)}
                 className="flex min-h-10 items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--color-ink)]"
