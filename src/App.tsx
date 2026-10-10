@@ -2120,7 +2120,7 @@ const CONTACT_EMAIL = 'hello@swndevelopment.pl'
  * falls back to opening the visitor's mail client, so the dialog is never a
  * dead end.
  */
-const FORM_KEY = (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined) || ''
+const FORM_KEY = (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined) || '6ed5ba36-d83d-4161-9694-92a958a7574e'
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 
 type SendState = 'idle' | 'sending' | 'sent' | 'mailed' | 'failed'
