@@ -2114,12 +2114,13 @@ function Meta({ label, value }: { label: string; value: string }) {
 const CONTACT_EMAIL = 'hello@swndevelopment.pl'
 
 /**
- * Web3Forms access key (web3forms.com, tied to CONTACT_EMAIL) — set
- * VITE_WEB3FORMS_KEY in the deployment environment. The key is meant to be
- * public: it can only deliver to that one inbox. Without it the form falls
- * back to opening the visitor's mail client, so the dialog is never a dead end.
+ * Web3Forms access key (web3forms.com, tied to CONTACT_EMAIL). The key is
+ * meant to be public: it can only deliver to that one inbox, so it lives here;
+ * VITE_WEB3FORMS_KEY in the environment overrides it. Without a key the form
+ * falls back to opening the visitor's mail client, so the dialog is never a
+ * dead end.
  */
-const FORM_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
+const FORM_KEY = (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined) || ''
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 
 type SendState = 'idle' | 'sending' | 'sent' | 'mailed' | 'failed'
