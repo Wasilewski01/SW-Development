@@ -9,6 +9,7 @@ const WRAP_W = 280
 const WRAP_H = 530
 const ANCHOR_X = WRAP_W / 2
 const REST = 96
+const REST_PHONE = 44
 
 /** A fixed pseudo-barcode per person, so it never reshuffles between renders. */
 function barcode(seed: string) {
@@ -36,13 +37,17 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
       line.setAttribute('y2', String(y))
     }
 
+    // A shorter lanyard on phones, where the badges are stacked and a long
+    // one would let each badge hang down over the text below it.
+    const rest = window.matchMedia('(max-width: 767px)').matches ? REST_PHONE : REST
+
     // No physics for reduced motion: the badge simply hangs still.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      place(ANCHOR_X, REST, 0)
+      place(ANCHOR_X, rest, 0)
       return
     }
 
-    const pos = { x: ANCHOR_X, y: REST }
+    const pos = { x: ANCHOR_X, y: rest }
     const vel = { x: 0, y: 0 }
     const k = 0.05
     const friction = 0.92
@@ -113,7 +118,7 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
         const dx = pos.x - ANCHOR_X
         const dy = pos.y
         const dist = Math.hypot(dx, dy) || 1
-        const force = (dist - REST) * k
+        const force = (dist - rest) * k
         vel.x = (vel.x - (dx / dist) * force) * friction
         vel.y = (vel.y - (dy / dist) * force + gravity) * friction
         pos.x += vel.x
@@ -139,10 +144,10 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
   }, [index])
 
   const bars = barcode(member.name.en)
-  const id = `SW-${String(index + 1).padStart(2, '0')}`
+  const id = `SWN-${String(index + 1).padStart(2, '0')}`
 
   return (
-    <div ref={wrapRef} className="relative mx-auto h-[530px] w-[280px]">
+    <div ref={wrapRef} className="relative mx-auto h-[440px] w-[280px] md:h-[530px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
         <line
           ref={lineRef}
@@ -159,13 +164,12 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
 
       <div
         ref={badgeRef}
-        className="group absolute w-[228px] cursor-grab select-none rounded-2xl border border-[var(--color-line-strong)] bg-[var(--color-surface)] p-4 shadow-[0_30px_50px_-28px_rgba(20,20,20,0.5)]"
+        className="group absolute w-[228px] cursor-grab touch-pan-y select-none md:touch-none rounded-2xl border border-[var(--color-line-strong)] bg-[var(--color-surface)] p-4 shadow-[0_30px_50px_-28px_rgba(20,20,20,0.5)]"
         style={{
           left: 0,
           top: 0,
           transform: `translate(${ANCHOR_X}px, ${REST}px) translate(-50%, 0)`,
           transformOrigin: '50% 0%',
-          touchAction: 'none',
         }}
       >
         {/* The punched slot the lanyard clips into */}
@@ -173,7 +177,7 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
 
         <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--color-ink-faint)]">
           <span className="flex items-center gap-1.5">
-            <span className="font-display text-[13px] normal-case tracking-[-0.04em] text-[var(--color-ink)]">SW</span>
+            <span className="font-display font-logo text-[13px] normal-case tracking-[-0.04em] text-[var(--color-ink)]">SWN</span>
             Development
           </span>
           <span>{id}</span>
@@ -194,7 +198,7 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
           {lang === 'pl' ? 'Pełny dostęp' : 'All access'}
         </span>
         <p className="mt-2 font-display text-xl leading-tight text-[var(--color-ink)]">{member.name[lang]}</p>
-        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]">
+        <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]">
           {member.role[lang]}
         </p>
 
@@ -213,7 +217,7 @@ export default function HangingBadges({ members, lang }: { members: TeamMember[]
     <div className="relative">
       {/* The rail all three lanyards hang from */}
       <div className="absolute inset-x-0 top-0 hidden h-[3px] rounded-full bg-[var(--color-ink)] md:block" aria-hidden="true" />
-      <div className="grid gap-y-12 md:grid-cols-3">
+      <div className="grid gap-y-10 md:grid-cols-3">
         {members.map((member, i) => (
           <div key={member.name.en} className="relative flex flex-col">
             {/* Stacked on phones, each badge gets its own stretch of rail. */}
@@ -229,7 +233,8 @@ export default function HangingBadges({ members, lang }: { members: TeamMember[]
         ))}
       </div>
       <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-ink-faint)]">
-        {lang === 'pl' ? '↕ Złap identyfikator i pociągnij' : '↕ Grab a badge and pull'}
+        <span className="md:hidden">{lang === 'pl' ? '↔ Pociągnij identyfikator w bok' : '↔ Pull a badge sideways'}</span>
+        <span className="hidden md:inline">{lang === 'pl' ? '↕ Złap identyfikator i pociągnij' : '↕ Grab a badge and pull'}</span>
       </p>
     </div>
   )

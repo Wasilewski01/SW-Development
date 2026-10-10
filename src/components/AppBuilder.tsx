@@ -505,8 +505,8 @@ function Device({ platform, picked, lang }: { platform: Platform; picked: Featur
             platform === 'mobile' ? 'inset-x-2.5 top-10' : 'right-3 top-3 w-60'
           }`}
         >
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#141414] font-display text-[10px] text-[#f5f2ec]">
-            SW
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#141414] font-display font-logo text-[10px] text-[#f5f2ec]">
+            SWN
           </span>
           <div className="min-w-0 leading-tight">
             <p className="text-[10px] font-semibold text-[var(--color-ink)]">{pl ? 'Przypomnienie' : 'Reminder'}</p>
@@ -769,7 +769,7 @@ export default function AppBuilder({ lang, onOpen }: { lang: Lang; onOpen: (p: P
                   <Icon name={f.id} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-semibold leading-tight">{f.label[lang]}</span>
+                  <span className="block text-[13px] font-semibold leading-tight sm:truncate">{f.label[lang]}</span>
                   <span
                     className={`mt-0.5 hidden truncate text-[11.5px] leading-snug sm:block ${
                       on ? 'text-[var(--color-canvas)]/65' : 'text-[var(--color-ink-faint)]'

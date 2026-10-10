@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, useRef, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import {
   motion,
   MotionConfig,
@@ -336,7 +337,7 @@ function TestimonialsSection({ lang }: { lang: Lang }) {
                   <div className="flex flex-1 flex-col bg-[var(--color-surface)] px-6 py-6 sm:px-9 sm:py-8">
                     <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-ink-faint)]">
                       <span>{lang === 'pl' ? 'List referencyjny' : 'Letter of reference'}</span>
-                      <span>SW/REF/{String(i + 1).padStart(2, '0')}</span>
+                      <span>SWN/REF/{String(i + 1).padStart(2, '0')}</span>
                     </div>
                     <div className="mt-4 border-b border-[var(--color-line-strong)] pb-4">
                       <p className="font-display text-2xl leading-none sm:text-3xl">{r.sector[lang]}</p>
@@ -355,7 +356,7 @@ function TestimonialsSection({ lang }: { lang: Lang }) {
                     <div className="mt-auto flex items-end justify-between gap-4 pt-5">
                       <div>
                         <Signature seed={i} />
-                        <p className="mt-1 border-t border-[var(--color-line-strong)] pt-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]">
+                        <p className="mt-1 border-t border-[var(--color-line-strong)] pt-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]">
                           {r.name ? `${r.name}, ${r.role[lang]}` : r.role[lang]}
                         </p>
                       </div>
@@ -391,7 +392,6 @@ const faqAuthors: Record<FaqAuthor, number> = { mikolaj: 0, jakub: 1, wojciech: 
 
 function FaqSection({ lang, onAsk }: { lang: Lang; onAsk: (message: string) => void }) {
   const [active, setActive] = useState(0)
-  const card = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onFaq = (e: Event) => {
@@ -402,15 +402,36 @@ function FaqSection({ lang, onAsk }: { lang: Lang; onAsk: (message: string) => v
     return () => window.removeEventListener('sw-faq', onFaq)
   }, [])
 
-  const pick = (i: number) => {
-    setActive(i)
-    // On a phone the answer is below the list: bring it into view.
-    if (window.matchMedia('(max-width: 1023px)').matches) card.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-  }
+  const pick = (i: number) => setActive(i)
 
   const f = faq[active]
   const who = teamMembers[faqAuthors[f.by]]
   const first = who.name[lang].split(' ')[0]
+
+  // Who answers, the answer and a way to ask them more. On wide screens it is
+  // a sticky card beside the list; below that it opens under its question.
+  const answer = (
+    <>
+      <div className="flex items-center gap-3.5">
+        <img src={who.image} alt="" className="h-12 w-12 rounded-full object-cover ring-2 ring-[var(--color-accent)]/40" />
+        <div>
+          <p className="text-sm font-medium text-[var(--color-ink)]">{who.name[lang]}</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--color-ink-faint)]">{who.role[lang]}</p>
+        </div>
+      </div>
+      <p className="mt-6 hidden font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-accent-ink)] lg:block">{f.q[lang]}</p>
+      <p className="mt-5 font-display text-lg leading-snug text-[var(--color-ink)] sm:text-2xl lg:mt-2">{f.a[lang]}</p>
+      <button
+        onClick={() => onAsk(lang === 'pl' ? `Pytanie do: ${who.name[lang]}\n\n` : `A question for ${who.name[lang]}\n\n`)}
+        className="group mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-line-strong)] px-4 text-sm text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] lg:mt-7"
+      >
+        {lang === 'pl' ? `Zapytaj ${first === 'Jakub' ? 'Jakuba' : first === 'Mikołaj' ? 'Mikołaja' : 'Wojciecha'} o coś innego` : `Ask ${first} something else`}
+        <span className="transition-transform group-hover:translate-x-0.5" aria-hidden="true">
+          →
+        </span>
+      </button>
+    </>
+  )
 
   return (
     <section id="faq" className="pt-24 pb-10 sm:pt-32">
@@ -445,12 +466,27 @@ function FaqSection({ lang, onAsk }: { lang: Lang; onAsk: (message: string) => v
                     className={`h-6 w-6 shrink-0 rounded-full object-cover transition-[filter,opacity] ${on ? 'opacity-100' : 'opacity-50 grayscale group-hover:opacity-80'}`}
                   />
                 </button>
+                {/* Below lg the answer opens right under its question. */}
+                <AnimatePresence initial={false}>
+                  {on && (
+                    <motion.div
+                      key={lang}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: 'easeOut' }}
+                      className="overflow-hidden border-b border-[var(--color-line)] lg:hidden"
+                    >
+                      <div className="py-5 pl-[30px]">{answer}</div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </li>
             )
           })}
         </ol>
 
-        <div ref={card} className="lg:sticky lg:top-24 lg:self-start">
+        <div className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
           <div className="relative overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
             <AnimatePresence mode="wait">
               <motion.div
@@ -460,26 +496,7 @@ function FaqSection({ lang, onAsk }: { lang: Lang; onAsk: (message: string) => v
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.22, ease: 'easeOut' }}
               >
-                <div className="flex items-center gap-3.5">
-                  <img src={who.image} alt="" className="h-12 w-12 rounded-full object-cover ring-2 ring-[var(--color-accent)]/40" />
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-ink)]">{who.name[lang]}</p>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-faint)]">{who.role[lang]}</p>
-                  </div>
-                </div>
-                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-accent-ink)]">{f.q[lang]}</p>
-                <p className="mt-2 font-display text-xl leading-snug text-[var(--color-ink)] sm:text-2xl">{f.a[lang]}</p>
-                <button
-                  onClick={() =>
-                    onAsk(lang === 'pl' ? `Pytanie do: ${who.name[lang]}\n\n` : `A question for ${who.name[lang]}\n\n`)
-                  }
-                  className="group mt-7 inline-flex min-h-10 items-center gap-2 rounded-full border border-[var(--color-line-strong)] px-4 text-sm text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)]"
-                >
-                  {lang === 'pl' ? `Zapytaj ${first === 'Jakub' ? 'Jakuba' : first === 'Mikołaj' ? 'Mikołaja' : 'Wojciecha'} o coś innego` : `Ask ${first} something else`}
-                  <span className="transition-transform group-hover:translate-x-0.5" aria-hidden="true">
-                    →
-                  </span>
-                </button>
+                {answer}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -489,7 +506,132 @@ function FaqSection({ lang, onAsk }: { lang: Lang; onAsk: (message: string) => v
   )
 }
 
+/* ---------------------------------------------------------- Work filter */
+
+type WorkFilter = 'all' | Project['category']
+
+/** The work filter on phones: the active category as a pill, the rest in a sheet. */
+function PhoneFilter({
+  filter,
+  onPick,
+  count,
+  lang,
+}: {
+  filter: WorkFilter
+  onPick: (key: WorkFilter) => void
+  count: number
+  lang: Lang
+}) {
+  const [open, setOpen] = useState(false)
+  const sheetRef = useRef<HTMLDivElement>(null)
+  useDialog(sheetRef, () => setOpen(false), { open })
+  const active = categories.find((c) => c.key === filter) ?? categories[0]
+  const countOf = (key: WorkFilter) => projects.filter((p) => key === 'all' || p.category === key).length
+
+  return (
+    <div className="pointer-events-auto md:hidden">
+      <button
+        onClick={() => setOpen(true)}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        className="flex min-h-11 items-center gap-2.5 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-canvas)]/85 pl-5 pr-4 text-sm font-medium text-[var(--color-ink)] shadow-[0_14px_30px_-20px_rgba(20,20,20,0.4)] backdrop-blur-md"
+      >
+        {active.label[lang]}
+        <span className="font-mono text-[11px] text-[var(--color-ink-faint)]">· {count}</span>
+        <svg viewBox="0 0 12 12" className="h-3 w-3 text-[var(--color-ink-soft)]" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+          <path d="M2.5 4.5 6 8l3.5-3.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {/* Portalled: inside the sticky filter bar it could not cover the masthead. */}
+      {createPortal(
+        <AnimatePresence>
+          {open && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setOpen(false)}
+                className="fixed inset-0 z-[80] bg-black/45 backdrop-blur-[2px]"
+                aria-hidden="true"
+              />
+              <motion.div
+                ref={sheetRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label={lang === 'pl' ? 'Pokaż realizacje' : 'Show work'}
+                initial={{ y: '100%' }}
+                animate={{ y: 0 }}
+                exit={{ y: '100%' }}
+                transition={{ type: 'spring', stiffness: 380, damping: 36 }}
+                drag="y"
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={{ top: 0, bottom: 0.6 }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.y > 80 || info.velocity.y > 500) setOpen(false)
+                }}
+                className="fixed inset-x-0 bottom-0 z-[81] rounded-t-3xl border-t border-[var(--color-line-strong)] bg-[var(--color-canvas)] px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-24px_60px_-30px_rgba(0,0,0,0.6)]"
+              >
+                <div className="mx-auto h-1 w-10 rounded-full bg-[var(--color-line-strong)]" aria-hidden="true" />
+                <div className="mt-4 flex items-center justify-between px-1">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-ink-faint)]">
+                    {lang === 'pl' ? 'Pokaż realizacje' : 'Show work'}
+                  </p>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="-mr-2 flex h-10 w-10 items-center justify-center rounded-full text-lg text-[var(--color-ink-soft)]"
+                    aria-label={lang === 'pl' ? 'Zamknij' : 'Close'}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <ul className="mt-2">
+                  {categories.map((c) => {
+                    const on = c.key === filter
+                    return (
+                      <li key={c.key}>
+                        <button
+                          onClick={() => {
+                            setOpen(false)
+                            onPick(c.key)
+                          }}
+                          aria-pressed={on}
+                          className={`flex min-h-14 w-full items-center gap-4 rounded-2xl px-3 text-left transition-colors ${
+                            on ? 'bg-[var(--color-ink)]/[0.06]' : ''
+                          }`}
+                        >
+                          <span
+                            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-[1.5px] ${
+                              on ? 'border-[var(--color-accent)]' : 'border-[var(--color-line-strong)]'
+                            }`}
+                            aria-hidden="true"
+                          >
+                            {on && <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />}
+                          </span>
+                          <span className={`flex-1 text-base ${on ? 'font-medium text-[var(--color-ink)]' : 'text-[var(--color-ink-soft)]'}`}>
+                            {c.label[lang]}
+                          </span>
+                          <span className="font-mono text-xs text-[var(--color-ink-faint)]">{countOf(c.key)}</span>
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </div>
+  )
+}
+
 /* ------------------------------------------------------------------ App */
+
+/** How many projects a phone lists before "show all". */
+const WORK_ON_PHONE = 6
 
 export default function App() {
   const [lang, setLang] = useState<Lang>('pl')
@@ -569,6 +711,7 @@ export default function App() {
   }, [lang])
 
   const shown = projects.filter((p) => filter === 'all' || p.category === filter)
+  const [allWork, setAllWork] = useState(false)
 
   // A shorter filter shrinks the grid under the reader, who would otherwise be
   // left further down the page (in About us). Bring them back to the grid top.
@@ -588,7 +731,7 @@ export default function App() {
         <CursorGlow />
         <CommandPalette lang={lang} actions={paletteActions} />
         <Header lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
-        <ConceptDock skin={skin} setSkin={setSkin} lang={lang} />
+        {SHOW_CONCEPTS && <ConceptDock skin={skin} setSkin={setSkin} lang={lang} />}
 
         <main className="relative z-[2]">
           <div className="mx-auto w-full max-w-6xl px-4 pt-16 sm:px-8">
@@ -626,8 +769,11 @@ export default function App() {
 
               {/* Filters: the active one carries the brand line instead of a fill. */}
               {/* Filters float as their own pill, clear of the masthead above them */}
+              {/* On phones the row would be cut off, so it folds into one button
+                  that opens the categories as a sheet from the bottom. */}
               <div className="pointer-events-none sticky top-[74px] z-30 mb-10 flex justify-center">
-              <div className="pointer-events-auto flex max-w-full items-center overflow-x-auto rounded-full border border-[var(--color-line-strong)] bg-[var(--color-canvas)]/85 px-1.5 shadow-[0_14px_30px_-20px_rgba(20,20,20,0.4)] backdrop-blur-md [scrollbar-width:none]">
+              <PhoneFilter filter={filter} onPick={pickFilter} count={shown.length} lang={lang} />
+              <div className="pointer-events-auto hidden max-w-full items-center overflow-x-auto rounded-full border border-[var(--color-line-strong)] bg-[var(--color-canvas)]/85 px-1.5 shadow-[0_14px_30px_-20px_rgba(20,20,20,0.4)] backdrop-blur-md [scrollbar-width:none] md:flex">
                 {categories.map((c) => {
                   const isActive = filter === c.key
                   return (
@@ -659,13 +805,27 @@ export default function App() {
               </div>
 
               {/* Two to a row from tablets up: big enough to actually read a screenshot. */}
-              <div ref={gridRef} className="grid grid-cols-1 gap-x-10 gap-y-16 md:grid-cols-2 lg:gap-y-24">
+              <div ref={gridRef} className="grid grid-cols-1 gap-x-10 gap-y-12 sm:gap-y-16 md:grid-cols-2 lg:gap-y-24">
                 {shown.map((p, i) => (
-                  <Reveal key={p.id} delay={(i % 2) * 100}>
-                    <Card p={p} index={projects.indexOf(p) + 1} lang={lang} onOpen={() => setOpen(p)} />
-                  </Reveal>
+                  // On phones a long list stops after a few, behind "show all".
+                  <div key={p.id} className={!allWork && i >= WORK_ON_PHONE ? 'hidden md:block' : undefined}>
+                    <Reveal delay={(i % 2) * 100}>
+                      <Card p={p} index={projects.indexOf(p) + 1} lang={lang} onOpen={() => setOpen(p)} />
+                    </Reveal>
+                  </div>
                 ))}
               </div>
+              {!allWork && shown.length > WORK_ON_PHONE && (
+                <button
+                  onClick={() => setAllWork(true)}
+                  className="mt-12 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-line-strong)] text-sm font-medium text-[var(--color-ink)] md:hidden"
+                >
+                  {lang === 'pl' ? 'Pokaż wszystkie' : 'Show all'}
+                  <span className="font-mono text-[11px] text-[var(--color-ink-faint)]">
+                    +{shown.length - WORK_ON_PHONE}
+                  </span>
+                </button>
+              )}
             </section>
 
             <Reveal>
@@ -711,6 +871,13 @@ export default function App() {
 
 /* ---------------------------------------------------------------- Header */
 
+/**
+ * Aurora is the chosen look. The other concepts stay in the code (their CSS
+ * in index.css, the dock below) but are hidden; true brings the dock back,
+ * together with the saved-look lines in index.html.
+ */
+const SHOW_CONCEPTS = false
+
 const skins = ['aurora', 'papier', 'swiss'] as const
 type Skin = (typeof skins)[number]
 const skinNames: Record<Skin, string> = {
@@ -735,8 +902,9 @@ const skinBlurb: Record<Skin, LS> = {
  * the looks that lost, once one is picked.
  */
 function ConceptDock({ skin, setSkin, lang }: { skin: Skin; setSkin: (s: Skin) => void; lang: Lang }) {
-  const [open, setOpen] = useState(true)
-  const step = (d: number) => setSkin(skins[(skins.indexOf(skin) + d + skins.length) % skins.length])
+  // Folded on phones, where the full dock would cover the bottom of every screen.
+  const [open, setOpen] = useState(() => window.innerWidth >= 640)
+  const step =(d: number) => setSkin(skins[(skins.indexOf(skin) + d + skins.length) % skins.length])
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!e.altKey || isTypingTarget(e)) return
@@ -750,7 +918,11 @@ function ConceptDock({ skin, setSkin, lang }: { skin: Skin; setSkin: (s: Skin) =
   })
 
   return (
-    <div className="fixed bottom-4 left-1/2 z-[60] -translate-x-1/2">
+    <div
+      className={`fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[60] sm:bottom-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 ${
+        open ? 'left-1/2 -translate-x-1/2' : 'right-3'
+      }`}
+    >
       <div className="flex items-center gap-1 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-canvas)]/90 p-1.5 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.5)] backdrop-blur-md">
         <button
           onClick={() => setOpen((o) => !o)}
@@ -876,7 +1048,7 @@ function Header({
           <button
             onClick={() => setLang(l)}
             aria-pressed={lang === l}
-            className={`min-h-10 uppercase transition-colors ${
+            className={`relative min-h-10 uppercase transition-colors before:absolute before:-inset-x-2 before:inset-y-0 before:content-[''] ${
               lang === l ? 'text-[var(--color-ink)]' : 'text-[var(--color-ink-faint)] hover:text-[var(--color-accent-ink)]'
             }`}
           >
@@ -891,15 +1063,17 @@ function Header({
     <>
       <header className="fixed inset-x-0 top-0 z-50 bg-[var(--color-canvas)]/90 backdrop-blur-md">
         <div className="mx-auto flex h-[60px] w-full max-w-6xl items-center gap-6 px-4 sm:px-8 xl:gap-5">
-          {/* Brand: on hover the logo's line stretches and the name lifts */}
-          <a href="#hero" onClick={(e) => goToSection(e, 'hero')} className="group/brand flex shrink-0 items-center gap-3">
+          {/* Brand: the mark alone; on hover its line stretches */}
+          <a
+            href="#hero"
+            onClick={(e) => goToSection(e, 'hero')}
+            aria-label={t.brand[lang]}
+            className="group/brand flex min-h-11 shrink-0 items-center"
+          >
             <SWMark
               className="text-[19px] text-[var(--color-ink)]"
-              line="h-[1.5px] transition-[width] duration-300 ease-out group-hover/brand:w-[1.9em]"
+              line="h-[1.5px] transition-[width] duration-300 ease-out group-hover/brand:w-[calc(100%+0.5em)]"
             />
-            <span className="hidden font-display text-[15px] text-[var(--color-ink)] transition-transform duration-300 group-hover/brand:-translate-y-px group-hover/brand:text-[var(--color-accent-ink)] sm:block">
-              {t.brand[lang]}
-            </span>
           </a>
 
           <nav
@@ -1286,7 +1460,7 @@ function Face({ data, back, lang }: { data: FaceData; back?: boolean; lang: Lang
         {/* The studio name pings the accent like a radar contact; the people's names stay put. */}
         <p
           className={`font-display text-xl leading-tight text-[var(--color-ink)] xl:text-2xl ${
-            data.theme === 'studio' ? '[animation:radar-ping_2.6s_ease-out_infinite]' : ''
+            data.theme === 'studio' ? 'font-logo [animation:radar-ping_2.6s_ease-out_infinite]' : ''
           }`}
         >
           {resolve(data.name)}
@@ -1321,7 +1495,7 @@ function FlipCard({ lang }: { lang: Lang }) {
   const faces: FaceData[] = [
     {
       tag: { pl: 'Studio', en: 'Studio' },
-      name: 'SW Development',
+      name: 'SWN Development',
       role: t.role[lang],
       theme: 'studio',
       stack: [
@@ -1435,10 +1609,10 @@ function Hero({ lang, onOpenForm, onOpen }: { lang: Lang; onOpenForm: () => void
     <section id="hero" className="relative pb-12 pt-10 sm:pb-16 sm:pt-12">
       {/* The logo again, as a watermark far larger than the page. */}
       <span
-        className="pointer-events-none absolute -right-[12vw] -top-10 select-none font-display text-[46vw] font-normal leading-none tracking-[-0.06em] text-[var(--color-ink)] opacity-[0.035] lg:-right-40 lg:text-[34rem]"
+        className="pointer-events-none absolute -right-[12vw] -top-10 select-none font-display font-logo text-[46vw] font-normal leading-none tracking-[-0.06em] text-[var(--color-ink)] opacity-[0.035] lg:-right-40 lg:text-[34rem]"
         aria-hidden="true"
       >
-        SW
+        SWN
       </span>
 
       <FlipCard lang={lang} />
@@ -2216,7 +2390,7 @@ function Footer({ lang }: { lang: Lang }) {
 
   // Closes the page the way the logo opens it: the mark, large and centred.
   return (
-    <footer className="relative z-[2] mx-auto w-full max-w-6xl px-4 pb-28 pt-8 sm:px-8 lg:pb-12">
+    <footer className="relative z-[2] mx-auto w-full max-w-6xl px-4 pb-12 pt-8 sm:px-8">
       <div className="flex flex-col items-center border-t border-[var(--color-line)] pt-16 text-center">
         <SWMark className="text-7xl text-[var(--color-ink)] sm:text-8xl" line="h-[2px]" />
         <p className="mt-8 max-w-sm font-display text-lg font-light italic text-[var(--color-ink-soft)]">
@@ -2237,7 +2411,7 @@ function Footer({ lang }: { lang: Lang }) {
               href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="accent-line hover:text-[var(--color-ink)]"
+              className="accent-line before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] hover:text-[var(--color-ink)]"
             >
               {l.label}
             </a>
