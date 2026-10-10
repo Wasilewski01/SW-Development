@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><!-- figma:title --></title>
     <!-- figma:head-end -->
-    <!-- Tab icon: the SW mark (SVG), a PNG for browsers without SVG icons, and
+    <!-- Tab icon: the SWN mark (SVG), a PNG for browsers without SVG icons, and
          the home-screen icon for iOS. -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
@@ -19,9 +19,10 @@
         var saved = localStorage.getItem('sw-theme')
         var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
         document.documentElement.classList.toggle('dark', dark)
-        // The look (Aurora by default, or another from the concept dock) is remembered the same way.
-        var skin = localStorage.getItem('sw-skin')
-        if (skin === 'papier' || skin === 'swiss') document.documentElement.dataset.skin = skin
+        // Aurora is the look. The other concepts (Papier, Swiss) are shelved:
+        // to bring them back, set SHOW_CONCEPTS in App.tsx and restore here
+        //   var skin = localStorage.getItem('sw-skin')
+        //   if (skin === 'papier' || skin === 'swiss') document.documentElement.dataset.skin = skin
       } catch (e) {}
     </script>
     <!-- Only the glyphs the boot screen draws (the mark and the counter), so the
@@ -35,13 +36,23 @@
       rel="stylesheet"
       media="print"
       onload="this.media = 'all'; this.dataset.in = '1'"
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@600&family=Fraunces:opsz,wght@144,400&display=block&text=SW0123456789"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600&family=Fraunces:opsz,wght@144,400&display=block&text=SWN0123456789"
     />
     <style>
       /* Boot screen. Inline on purpose: a loader shipped inside the bundle would
          only appear after the bundle it is meant to cover has already arrived.
          The logo traces itself, its accent line doubles as the progress bar,
          and on the way out the letters become a window onto the page. */
+      /* The logo's own N, drawn to match Syne's W (Syne's N reads as another
+         face beside it). It covers only the letter N, so the family is put in
+         front of Syne wherever the logo is set. */
+      @font-face {
+        font-family: 'SWN Logo';
+        src: url('/fonts/swn-logo.ttf?v=2') format('truetype');
+        font-weight: 100 900;
+        font-display: block;
+        unicode-range: U+004E;
+      }
       #boot {
         --b-bg: #07060d;
         --b-ink: #f4f1ff;
@@ -51,6 +62,7 @@
         --b-orb-b: rgba(20, 200, 170, 0.38);
         --b-orb-c: rgba(255, 92, 168, 0.34);
         --b-face: 'Syne', ui-sans-serif, system-ui, sans-serif;
+        --b-logo: 'SWN Logo', var(--b-face);
         position: fixed;
         inset: 0;
         z-index: 200;
@@ -70,6 +82,7 @@
         --b-orb-b: rgba(214, 160, 90, 0.26);
         --b-orb-c: rgba(160, 70, 50, 0.3);
         --b-face: 'Fraunces', Georgia, serif;
+        --b-logo: var(--b-face);
       }
       #boot[data-leaving='true'] {
         pointer-events: none;
@@ -135,18 +148,18 @@
         justify-content: center;
       }
       #boot-mark {
-        width: min(64vw, 440px);
+        width: min(84vw, 600px);
         overflow: visible;
       }
       #boot-glyphs {
-        font-family: var(--b-face);
+        font-family: var(--b-logo);
         font-weight: 600;
         fill: var(--b-ink);
         fill-opacity: 0;
         stroke: var(--b-accent);
         stroke-width: 0.9;
-        stroke-dasharray: 520;
-        stroke-dashoffset: 520;
+        stroke-dasharray: 780;
+        stroke-dashoffset: 780;
         stroke-linejoin: round;
       }
       :root[data-skin='papier'] #boot-glyphs {
@@ -286,17 +299,17 @@
       <div id="boot-grain"></div>
 
       <div class="boot-stage">
-        <!-- The SWMark from src/ui.tsx: the letters over an accent line 1.35em wide. -->
-        <svg id="boot-mark" viewBox="0 0 240 150">
-          <text id="boot-glyphs" x="120" y="100" text-anchor="middle" font-size="110" letter-spacing="-5.5">SW</text>
-          <rect id="boot-line-track" x="45.75" y="118" width="148.5" height="2.5" />
-          <rect id="boot-line" x="45.75" y="118" width="148.5" height="2.5" />
+        <!-- The SWMark from src/ui.tsx: the letters over an accent line as wide as their ink. -->
+        <svg id="boot-mark" viewBox="0 0 350 150">
+          <text id="boot-glyphs" x="175" y="100" text-anchor="middle" font-size="110" letter-spacing="-5.5">SWN</text>
+          <rect id="boot-line-track" x="44" y="118" width="263.5" height="2.5" />
+          <rect id="boot-line" x="44" y="118" width="263.5" height="2.5" />
         </svg>
       </div>
 
       <div class="boot-chrome">
         <div class="boot-row">
-          <span class="boot-brand"><i></i>SW Development</span>
+          <span class="boot-brand"><i></i>SWN Development</span>
           <span class="boot-skip">Pomiń · dowolny klawisz</span>
         </div>
         <div class="boot-row">
@@ -335,7 +348,7 @@
         } catch (e) {}
 
         var papier = document.documentElement.dataset.skin === 'papier'
-        var face = papier ? '400 110px Fraunces' : '600 110px Syne'
+        var face = papier ? '400 110px Fraunces' : "600 110px 'SWN Logo', Syne"
         var SHOW_MS = 1700 // from the first stroke of the logo to 100%
         var svg = document.getElementById('boot-mark')
         var glyphs = document.getElementById('boot-glyphs')
@@ -376,7 +389,7 @@
         }
         var fontLink = document.getElementById('boot-font')
         var loadFace = function () {
-          if (document.fonts && document.fonts.load) document.fonts.load(face, 'SW').then(fontLoaded, fontLoaded)
+          if (document.fonts && document.fonts.load) document.fonts.load(face, 'SWN').then(fontLoaded, fontLoaded)
           else fontLoaded()
         }
         if (fontLink.dataset.in) loadFace()
@@ -412,7 +425,7 @@
           var H = innerHeight
           var m = glyphs.getScreenCTM()
           var k = m ? m.a : 1
-          var x = m ? m.a * 120 + m.e : W / 2
+          var x = m ? m.a * 175 + m.e : W / 2
           var y = m ? m.d * 100 + m.f : H / 2
           var size = 110 * k
           var track = -5.5 * k
@@ -427,7 +440,7 @@
             '<mask id="boot-hole" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="' + W + '" height="' + H + '">' +
             '<rect width="' + W + '" height="' + H + '" fill="#fff"/>' +
             '<g><text x="' + x + '" y="' + y + '" text-anchor="middle" font-size="' + size + '" letter-spacing="' + track + '" ' +
-            'style="font-family:' + getComputedStyle(glyphs).fontFamily.replace(/"/g, "'") + ';font-weight:' + (papier ? 400 : 600) + '" fill="#000">SW</text></g></mask>'
+            'style="font-family:' + getComputedStyle(glyphs).fontFamily.replace(/"/g, "'") + ';font-weight:' + (papier ? 400 : 600) + '" fill="#000">SWN</text></g></mask>'
           boot.appendChild(defs)
           var hole = defs.querySelector('g')
 
@@ -470,7 +483,7 @@
         function innerPoint(x, y, size, track) {
           var fallback = { x: x, y: y - size * 0.35, r: size * 0.06 }
           try {
-            var w = Math.ceil(size * 1.6)
+            var w = Math.ceil(size * 2.8)
             var h = Math.ceil(size * 1.1)
             var c = document.createElement('canvas')
             c.width = w
@@ -479,7 +492,7 @@
             ctx.font = face.replace('110px', size + 'px')
             if ('letterSpacing' in ctx) ctx.letterSpacing = track + 'px'
             ctx.textAlign = 'center'
-            ctx.fillText('SW', w / 2, h * 0.85)
+            ctx.fillText('SWN', w / 2, h * 0.85)
             var data = ctx.getImageData(0, 0, w, h).data
             var ink = function (px, py) {
               return px >= 0 && py >= 0 && px < w && py < h && data[(py * w + px) * 4 + 3] > 128
