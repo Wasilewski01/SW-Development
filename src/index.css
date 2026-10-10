@@ -81,6 +81,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* The logo's N comes from 'SWN Logo' (index.html), drawn to match Syne's W. */
+:root:not([data-skin]) .font-logo {
+  font-family: 'SWN Logo', var(--font-display);
+}
+
 /* Syne at a firm weight, set tight, whatever weight the markup asks for. */
 :root:not([data-skin]) .font-display {
   font-weight: 600 !important;
@@ -357,7 +362,7 @@ body::before {
   }
 }
 
-/* "SW Development" on the card's cover face: a blip to the accent and back. */
+/* "SWN Development" on the card's cover face: a blip to the accent and back. */
 @keyframes radar-ping {
   0% {
     color: var(--color-ink);

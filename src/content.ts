@@ -757,7 +757,7 @@ export const projects: Project[] = [
 /* ---------------------------------------------------------- UI strings */
 
 export const t = {
-  brand: { pl: 'SW Development', en: 'SW Development' },
+  brand: { pl: 'SWN Development', en: 'SWN Development' },
   role: { pl: 'Aplikacje web, mobile i systemy dla firm', en: 'Web, mobile & business systems' },
   nav: {
     work: { pl: 'Realizacje', en: 'Work' },
@@ -865,8 +865,8 @@ export const t = {
   close: { pl: 'Zamknij', en: 'Close' },
   aboutSectionTitle: { pl: 'O nas', en: 'About us' },
   aboutSectionBody: {
-    pl: 'W SW Development działamy jako trzyosobowe studio: dwoje developerów oraz analityk biznesowy. Łączymy projektowanie, kodowanie i sprawne zbieranie kontekstu aplikacji, aby interfejsy nie tylko dobrze wyglądały, ale też działały bezbłędnie.',
-    en: 'At SW Development we work as a three-person studio: two developers and a business analyst. We combine design, code, and efficient application discovery so interfaces not only look good, but work flawlessly.'
+    pl: 'W SWN Development działamy jako trzyosobowe studio: dwoje developerów oraz analityk biznesowy. Łączymy projektowanie, kodowanie i sprawne zbieranie kontekstu aplikacji, aby interfejsy nie tylko dobrze wyglądały, ale też działały bezbłędnie.',
+    en: 'At SWN Development we work as a three-person studio: two developers and a business analyst. We combine design, code, and efficient application discovery so interfaces not only look good, but work flawlessly.'
   },
   sectionFaq: { pl: 'FAQ', en: 'FAQ' },
   faqTitle: { pl: 'Zapytaj nas', en: 'Ask us' },
@@ -1037,10 +1037,13 @@ export const teamMembers: TeamMember[] = [
   {
     name: { pl: 'Jakub Wasilewski', en: 'Jakub Wasilewski' },
     role: { pl: 'Development & Security', en: 'Development & Security' },
-    education: { pl: 'Edukacja: do uzupełnienia', en: 'Education: to be added' },
+    education: {
+      pl: 'Specjalizacja: backend, API i bezpieczeństwo aplikacji webowych.',
+      en: 'Focus: back-end, APIs and web application security.'
+    },
     bio: {
-      pl: 'Buduje szybkie, stabilne aplikacje i dba o ich bezpieczeństwo.',
-      en: 'Builds fast, reliable applications and keeps them secure.'
+      pl: 'Projektuje backend i API tak, żeby aplikacja działała szybko także pod dużym ruchem. O bezpieczeństwo dba od pierwszej linijki kodu — logowanie, uprawnienia, ochrona danych i testy przed każdym wdrożeniem.',
+      en: 'Designs the back-end and APIs so an app stays fast under heavy traffic. Builds security in from the first line of code — sign-in, permissions, data protection and tests before every release.'
     },
     image: jakubPhoto,
     theme: 'security',
@@ -1053,10 +1056,13 @@ export const teamMembers: TeamMember[] = [
   {
     name: { pl: 'Wojciech Nowicki', en: 'Wojciech Nowicki' },
     role: { pl: 'Discovery & Kontakt z klientem', en: 'Discovery & Client Contact' },
-    education: { pl: 'Edukacja: do uzupełnienia', en: 'Education: to be added' },
+    education: {
+      pl: 'Specjalizacja: analiza biznesowa i modelowanie procesów (BPMN).',
+      en: 'Focus: business analysis and process modelling (BPMN).'
+    },
     bio: {
-      pl: 'Zbiera wymagania i porządkuje kontekst aplikacji, dbając o stały kontakt z klientem na każdym etapie.',
-      en: 'Gathers requirements and organizes app context, keeping the client in close contact at every stage.'
+      pl: 'Zanim powstanie pierwsza makieta, rozmawia z klientem: zbiera wymagania, rozpisuje procesy i pilnuje, żeby zespół budował to, czego firma naprawdę potrzebuje. Na każdym etapie jest pierwszym kontaktem — wie, co dzieje się w projekcie i co będzie dalej.',
+      en: 'Talks to the client before the first mockup: gathers requirements, maps the processes and makes sure the team builds what the business actually needs. The first point of contact at every stage — always knows where the project stands and what comes next.'
     },
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=800&fit=crop',
     theme: 'analysis',

@@ -1,0 +1,246 @@
+/* ── Papier: the previous look, kept on the shelf ─────────────────────────
+   Not imported anywhere. To bring it back:
+     1. copy this file over src/index.css
+     2. in index.html, swap the boot-screen colours back:
+        #07060d -> #141414 and #7cf7d4 -> #e4573f
+   ──────────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+
+/* Dark mode follows the .dark class the theme toggle sets on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* The whole system grows out of the logo: "SWN" in Fraunces over a thin coral
+   line. Three colours only — paper, ink, coral — with coral kept to lines and
+   the one button that matters. */
+@theme {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-canvas: #f5f2ec;
+  --color-surface: #fbfaf7;
+  --color-ink: #141414;
+  --color-ink-soft: #57524a;
+  --color-ink-faint: #767067;
+  --color-line: #e3ddd2;
+  --color-line-strong: #cfc7b9;
+  /* Coral for lines, fills and large type. Small coral text uses accent-ink,
+     which clears AA contrast on paper where the logo coral does not. */
+  --color-accent: #e4573f;
+  --color-accent-ink: #b8402b;
+  --color-accent-soft: #f7e3dc;
+  --color-positive: #2f7d4f;
+  --color-warn: #a86411;
+  /* Text sitting on an accent fill */
+  --color-on-accent: #141414;
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  --color-canvas: #141414;
+  --color-surface: #1c1b19;
+  --color-ink: #f5f2ec;
+  --color-ink-soft: #b3ada3;
+  --color-ink-faint: #8c867c;
+  --color-line: #2b2926;
+  --color-line-strong: #3d3a35;
+  --color-accent-ink: #f0806b;
+  --color-accent-soft: #3a211b;
+  --color-positive: #5fbf86;
+  --color-warn: #e0a24a;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Fraunces reads best with its optical size following the rendered size. */
+.font-display {
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Paper grain: a faint noise over the whole page so the canvas reads as paper
+   rather than a flat fill. Pure decoration, never intercepts input. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root.dark body::before {
+  mix-blend-mode: screen;
+  opacity: 0.25;
+}
+
+/* Hide scrollbars until scrolling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*:hover {
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* Focus is the brand line too: an accent outline, offset from the element. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* The logo's line, reused as a hover underline: grows from the left.
+   .accent-line-lead also lights up when its whole .group card is hovered.
+   (Named after the original coral; it follows the accent colour.) */
+.accent-line {
+  position: relative;
+}
+.accent-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1.5px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.accent-line:hover::after,
+.group:hover .accent-line-lead::after,
+.accent-line[data-on='true']::after {
+  transform: scaleX(1);
+}
+
+/* Soft accent glow following the pointer (desktop only, see CursorGlow). */
+#cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background: radial-gradient(
+    520px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    color-mix(in srgb, var(--color-accent) 9%, transparent),
+    transparent 70%
+  );
+}
+
+@keyframes tour-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Falling code on the security face of the flipping business card */
+@keyframes flip-card-rain {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* "SWN Development" on the card's cover face: a blip to the accent and back. */
+@keyframes radar-ping {
+  0% {
+    color: var(--color-ink);
+  }
+  5% {
+    color: var(--color-accent);
+  }
+  40%,
+  100% {
+    color: var(--color-ink);
+  }
+}
+
+/* Brief ticket: a paper slip with punched, perforated top and bottom edges. */
+.ticket {
+  --notch: 9px;
+  -webkit-mask:
+    radial-gradient(circle at 50% 0, transparent var(--notch), #000 calc(var(--notch) + 0.5px)) top / 26px 51% repeat-x,
+    radial-gradient(circle at 50% 100%, transparent var(--notch), #000 calc(var(--notch) + 0.5px)) bottom / 26px 51%
+      repeat-x;
+  mask:
+    radial-gradient(circle at 50% 0, transparent var(--notch), #000 calc(var(--notch) + 0.5px)) top / 26px 51% repeat-x,
+    radial-gradient(circle at 50% 100%, transparent var(--notch), #000 calc(var(--notch) + 0.5px)) bottom / 26px 51%
+      repeat-x;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  #cursor-glow {
+    display: none;
+  }
+}

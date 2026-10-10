@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'framer-motion'
 import { processSteps, sectionNumbers, type Lang } from '../content'
 
@@ -285,37 +285,35 @@ export default function ProcessStory({ lang }: { lang: Lang }) {
     window.scrollTo({ top: top + travel * ((i + 0.5) / STAGES), behavior: 'smooth' })
   }
 
-  // From lg up the pinned panel keeps its natural height and is pinned so it
-  // sits in the middle of the screen: centred while it scrolls, yet with no
-  // empty screen-height above or below it when it lets go. Phones keep the
-  // full-height centred panel.
+  // The pinned panel keeps its natural height and is pinned so it sits in the
+  // middle of the screen, below the masthead: centred while it scrolls, yet
+  // with no empty screen-height above or below it when it lets go.
   const pinRef = useRef<HTMLDivElement>(null)
   const [pinTop, setPinTop] = useState<number | undefined>(undefined)
   useEffect(() => {
     const el = pinRef.current
     if (!el) return
-    const wide = window.matchMedia('(min-width: 1024px)')
-    const place = () =>
-      setPinTop(wide.matches ? Math.max(72, Math.round((window.innerHeight + 60 - el.offsetHeight) / 2)) : undefined)
+    const place = () => setPinTop(Math.max(64, Math.round((window.innerHeight + 60 - el.offsetHeight) / 2)))
     const ro = new ResizeObserver(place)
     ro.observe(el)
     window.addEventListener('resize', place)
-    wide.addEventListener('change', place)
     place()
     return () => {
       ro.disconnect()
       window.removeEventListener('resize', place)
-      wide.removeEventListener('change', place)
     }
   }, [])
 
   const step = processSteps[stage]
 
   return (
-    <section id="process" ref={ref} className="relative mt-4 sm:mt-6" style={{ height: `${STAGES * 90 + 100}vh` }}>
+    <section id="process" ref={ref} className="relative mt-4 h-[var(--story)] sm:mt-6 lg:h-[var(--story-lg)]"
+      // A stage takes a shorter scroll on phones, so the story isn't five screens long.
+      style={{ '--story': `${STAGES * 65 + 100}svh`, '--story-lg': `${STAGES * 90 + 100}vh` } as CSSProperties}
+    >
       <div
         ref={pinRef}
-        className="sticky top-0 flex h-[100svh] flex-col justify-center pb-6 pt-16 lg:h-auto lg:py-6"
+        className="sticky top-16 flex flex-col justify-center py-6"
         style={pinTop !== undefined ? { top: pinTop } : undefined}
       >
         <div className="grid items-center gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">

@@ -100,7 +100,7 @@ export default function BriefTicket({ lang, onSend }: { lang: Lang; onSend: (mes
     <div className="relative mx-auto w-full max-w-[440px] rotate-[-1.2deg] transition-transform duration-500 [filter:drop-shadow(0_28px_28px_rgba(20,20,20,0.16))] hover:rotate-0">
       <div className="ticket relative bg-[var(--color-surface)] px-6 pb-9 pt-10 text-[var(--color-ink)] sm:px-8">
         <div className="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-ink-faint)]">
-          <span>SW Development</span>
+          <span>SWN Development</span>
           <span>{today}</span>
         </div>
         <div className="mt-3 flex items-end justify-between border-b border-dashed border-[var(--color-line-strong)] pb-4">
@@ -192,7 +192,7 @@ export default function BriefTicket({ lang, onSend }: { lang: Lang; onSend: (mes
             className="pointer-events-none absolute right-4 top-16 flex h-28 w-28 flex-col items-center justify-center rounded-full border-[2.5px] border-[var(--color-accent)] text-center font-mono text-[10px] font-semibold uppercase leading-tight tracking-[0.14em] text-[var(--color-accent)] mix-blend-multiply dark:mix-blend-screen sm:-right-6"
             aria-hidden="true"
           >
-            <span className="font-display text-2xl normal-case tracking-[-0.04em]">SW</span>
+            <span className="font-display font-logo text-2xl normal-case tracking-[-0.04em]">SWN</span>
             <span className="mx-3 mt-1 border-t border-[var(--color-accent)] pt-1">{copy.stamp[lang]}</span>
           </motion.div>
         )}

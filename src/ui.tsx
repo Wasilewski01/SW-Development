@@ -21,12 +21,12 @@ export const finePointer = () =>
   window.matchMedia('(pointer: fine)').matches &&
   !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-/** The logo itself: "SW" in the display face over an accent line wider than the letters. */
+/** The logo itself: "SWN" in the display face over an accent line as wide as the letters. */
 export function SWMark({ className = '', line = 'h-[1.5px]' }: { className?: string; line?: string }) {
   return (
-    <span className={`inline-flex flex-col items-center leading-none ${className}`} aria-label="SW">
-      <span className="font-display font-normal tracking-[-0.05em]">SW</span>
-      <span className={`mt-[0.14em] w-[1.35em] bg-[var(--color-accent)] ${line}`} aria-hidden="true" />
+    <span className={`inline-flex flex-col items-center leading-none ${className}`} aria-label="SWN">
+      <span className="font-display font-logo font-normal tracking-[-0.05em]">SWN</span>
+      <span className={`mt-[0.14em] w-full bg-[var(--color-accent)] ${line}`} aria-hidden="true" />
     </span>
   )
 }

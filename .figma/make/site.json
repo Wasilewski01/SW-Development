@@ -1,8 +1,12 @@
 {
-  "title": "SWN Development",
-  "description": "Provides bilingual Polish-English content or services to support users in both languages for effective communication and accessibility.",
+  "title": "SWN Development – aplikacje webowe, mobilne i systemy dla firm",
+  "description": "Trzyosobowe studio, które projektuje i buduje strony, aplikacje webowe i mobilne oraz systemy dla firm. Jeden kontakt od pomysłu po wdrożenie.",
+  "language": "pl",
   "robots": {
-    "index": false
+    "index": true
+  },
+  "openGraph": {
+    "image": "https://www.swndevelopment.pl/og-image.png"
   },
   "accessibility": {
     "addBypassLinks": false,
