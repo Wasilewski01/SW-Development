@@ -1930,171 +1930,176 @@ function CaseStudy({
         className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl bg-[var(--color-surface)] shadow-2xl sm:rounded-2xl"
         style={{ animation: 'tour-pop 0.35s cubic-bezier(0.22,1,0.36,1)' }}
       >
-        <div
-          className="relative max-h-[38vh] shrink-0 overflow-hidden border-b border-[var(--color-line)]"
-          style={{ aspectRatio: '16 / 9' }}
-        >
-          {p.status === 'private' || !p.image ? (
-            <LockedCover label={t.previewBlocked[lang]} />
-          ) : (
-            <img key={p.id} src={p.image} alt={p.name[lang]} className="h-full w-full object-cover object-top" style={{ animation: 'fade-in 0.3s ease' }} />
-          )}
-          {list.length > 1 && (
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-              {pager('prev')}
-              <span className="rounded-full bg-[#141414]/60 px-3 py-1.5 font-mono text-[11px] text-[#f5f2ec] backdrop-blur">
-                {String(at + 1).padStart(2, '0')} / {String(list.length).padStart(2, '0')}
-              </span>
-              {pager('next')}
-            </div>
-          )}
-          <button
-            onClick={onClose}
-            aria-label={t.close[lang]}
-            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#141414]/60 text-[#f5f2ec] backdrop-blur transition-colors hover:bg-[#141414]/80"
+        {/* The screenshot scrolls with the text instead of being capped at a fixed
+            height — a cap cropped the bottom of every shot. Same 16:10 as the card. */}
+        <div ref={bodyRef} className="min-h-0 flex-1 overflow-y-auto">
+          <div
+            className="relative overflow-hidden border-b border-[var(--color-line)]"
+            style={{ aspectRatio: '16 / 10' }}
           >
-            ✕
-          </button>
-        </div>
-
-        <div ref={bodyRef} className="min-h-0 flex-1 overflow-y-auto p-6 sm:p-8">
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 className="font-display text-3xl font-normal leading-tight sm:text-4xl">{p.name[lang]}</h2>
-            <span className="font-mono text-sm text-[var(--color-ink-faint)]">{p.year}</span>
+            {p.status === 'private' || !p.image ? (
+              <LockedCover label={t.previewBlocked[lang]} />
+            ) : (
+              <img key={p.id} src={p.image} alt={p.name[lang]} className="h-full w-full object-cover object-top" style={{ animation: 'fade-in 0.3s ease' }} />
+            )}
+            {list.length > 1 && (
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                {pager('prev')}
+                <span className="rounded-full bg-[#141414]/60 px-3 py-1.5 font-mono text-[11px] text-[#f5f2ec] backdrop-blur">
+                  {String(at + 1).padStart(2, '0')} / {String(list.length).padStart(2, '0')}
+                </span>
+                {pager('next')}
+              </div>
+            )}
           </div>
-          <span className="mt-3 block h-[1.5px] w-12 bg-[var(--color-accent)]" aria-hidden="true" />
-          {p.status && (
-            <div className="mt-4">
-              <StatusBadge status={p.status} lang={lang} />
-            </div>
-          )}
-          <p className="mt-4 text-base text-[var(--color-ink-soft)]">{p.tagline[lang]}</p>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 border-y border-[var(--color-line)] py-5 sm:grid-cols-3">
-            <Meta label={t.roleLabel[lang]} value={p.role[lang]} />
-            <Meta label={t.yearLabel[lang]} value={p.year} />
-            <div className="col-span-2 sm:col-span-1">
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
-                {t.stackLabel[lang]}
-              </p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {p.stack.map((s) => (
-                  <span
-                    key={s}
-                    className="rounded-md bg-[var(--color-canvas)] px-2 py-0.5 font-mono text-[11px] text-[var(--color-ink-soft)]"
-                  >
-                    {s}
-                  </span>
-                ))}
+          <div className="p-6 sm:p-8">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 className="font-display text-3xl font-normal leading-tight sm:text-4xl">{p.name[lang]}</h2>
+              <span className="font-mono text-sm text-[var(--color-ink-faint)]">{p.year}</span>
+            </div>
+            <span className="mt-3 block h-[1.5px] w-12 bg-[var(--color-accent)]" aria-hidden="true" />
+            {p.status && (
+              <div className="mt-4">
+                <StatusBadge status={p.status} lang={lang} />
+              </div>
+            )}
+            <p className="mt-4 text-base text-[var(--color-ink-soft)]">{p.tagline[lang]}</p>
+
+            <div className="mt-6 grid grid-cols-2 gap-4 border-y border-[var(--color-line)] py-5 sm:grid-cols-3">
+              <Meta label={t.roleLabel[lang]} value={p.role[lang]} />
+              <Meta label={t.yearLabel[lang]} value={p.year} />
+              <div className="col-span-2 sm:col-span-1">
+                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
+                  {t.stackLabel[lang]}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {p.stack.map((s) => (
+                    <span
+                      key={s}
+                      className="rounded-md bg-[var(--color-canvas)] px-2 py-0.5 font-mono text-[11px] text-[var(--color-ink-soft)]"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* What it changed for the client comes first; the engineering follows. */}
-          {p.results.length > 0 && (
-            <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-accent-soft)] p-5">
-              <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-accent-ink)]">
-                {t.resultsLabel[lang]}
+            {/* What it changed for the client comes first; the engineering follows. */}
+            {p.results.length > 0 && (
+              <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-accent-soft)] p-5">
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-accent-ink)]">
+                  {t.resultsLabel[lang]}
+                </h3>
+                <ul className="mt-3 flex flex-col gap-2.5">
+                  {p.results.map((r, i) => (
+                    <li key={i} className="flex items-start gap-3 text-[15px] leading-relaxed text-[var(--color-ink)]">
+                      <span className="mt-[0.15em] shrink-0 font-semibold text-[var(--color-accent-ink)]" aria-hidden="true">
+                        ✓
+                      </span>
+                      <span>{r[lang]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="mt-6">
+              <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
+                {t.aboutLabel[lang]}
               </h3>
-              <ul className="mt-3 flex flex-col gap-2.5">
-                {p.results.map((r, i) => (
-                  <li key={i} className="flex items-start gap-3 text-[15px] leading-relaxed text-[var(--color-ink)]">
-                    <span className="mt-[0.15em] shrink-0 font-semibold text-[var(--color-accent-ink)]" aria-hidden="true">
-                      ✓
-                    </span>
-                    <span>{r[lang]}</span>
+              <p className="mt-2 leading-relaxed text-[var(--color-ink-soft)]">{p.about[lang]}</p>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
+                {t.highlightsLabel[lang]}
+              </h3>
+              <ul className="mt-3 flex flex-col gap-3">
+                {p.highlights.map((h, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
+                    <span className="mt-[0.7em] h-[1.5px] w-3 shrink-0 bg-[var(--color-accent)]" />
+                    <span className="text-[var(--color-ink)]">{h[lang]}</span>
                   </li>
                 ))}
               </ul>
             </div>
-          )}
 
-          <div className="mt-6">
-            <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
-              {t.aboutLabel[lang]}
-            </h3>
-            <p className="mt-2 leading-relaxed text-[var(--color-ink-soft)]">{p.about[lang]}</p>
-          </div>
+            {/* A disabled button says nothing; when there is no link, say why. */}
+            <div className="mt-8 flex flex-col gap-2.5 sm:flex-row">
+              {p.liveUrl && (
+                <a
+                  href={p.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-[var(--color-accent)] px-4 text-sm font-semibold text-[var(--color-on-accent)] transition-all hover:bg-[var(--color-ink)] hover:text-[var(--color-canvas)] active:scale-[0.98]"
+                >
+                  {t.viewLive[lang]} ↗
+                </a>
+              )}
+              {p.repoUrl && (
+                <a
+                  href={p.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-12 flex-1 items-center justify-center rounded-full border border-[var(--color-line-strong)] px-4 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas)]"
+                >
+                  {t.viewCode[lang]}
+                </a>
+              )}
+              {!p.liveUrl && !p.repoUrl && (
+                <p className="flex-1 rounded-xl border border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-3 text-center text-sm text-[var(--color-ink-soft)]">
+                  {p.status === 'private'
+                    ? t.privateNote[lang]
+                    : p.status === 'ongoing'
+                      ? t.ongoingNote[lang]
+                      : p.status === 'forSale'
+                        ? t.forSaleNote[lang]
+                        : t.commercialNote[lang]}
+                </p>
+              )}
+            </div>
 
-          <div className="mt-6">
-            <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
-              {t.highlightsLabel[lang]}
-            </h3>
-            <ul className="mt-3 flex flex-col gap-3">
-              {p.highlights.map((h, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm leading-relaxed">
-                  <span className="mt-[0.7em] h-[1.5px] w-3 shrink-0 bg-[var(--color-accent)]" />
-                  <span className="text-[var(--color-ink)]">{h[lang]}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* A disabled button says nothing; when there is no link, say why. */}
-          <div className="mt-8 flex flex-col gap-2.5 sm:flex-row">
-            {p.liveUrl && (
-              <a
-                href={p.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex min-h-12 flex-1 items-center justify-center rounded-full bg-[var(--color-accent)] px-4 text-sm font-semibold text-[var(--color-on-accent)] transition-all hover:bg-[var(--color-ink)] hover:text-[var(--color-canvas)] active:scale-[0.98]"
+            {/* Read on: the next project, like the next article at the foot of a page */}
+            {list.length > 1 && (
+              <button
+                onClick={() => onNavigate(next)}
+                className="group mt-8 flex w-full items-center gap-4 border-t border-[var(--color-line)] pt-6 text-left"
               >
-                {t.viewLive[lang]} ↗
-              </a>
-            )}
-            {p.repoUrl && (
-              <a
-                href={p.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex min-h-12 flex-1 items-center justify-center rounded-full border border-[var(--color-line-strong)] px-4 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas)]"
-              >
-                {t.viewCode[lang]}
-              </a>
-            )}
-            {!p.liveUrl && !p.repoUrl && (
-              <p className="flex-1 rounded-xl border border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-3 text-center text-sm text-[var(--color-ink-soft)]">
-                {p.status === 'private'
-                  ? t.privateNote[lang]
-                  : p.status === 'ongoing'
-                    ? t.ongoingNote[lang]
-                    : p.status === 'forSale'
-                      ? t.forSaleNote[lang]
-                      : t.commercialNote[lang]}
-              </p>
+                <span className="h-14 w-24 shrink-0 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-canvas)]">
+                  {next.status !== 'private' && next.image ? (
+                    <img src={next.image} alt="" loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+                  ) : (
+                    <span
+                      className="block h-full w-full"
+                      style={{ backgroundImage: 'repeating-linear-gradient(135deg, var(--color-line-strong) 0 1px, transparent 1px 7px)' }}
+                    />
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
+                    {lang === 'pl' ? 'Następny projekt' : 'Next project'} · {String(((at + 1) % list.length) + 1).padStart(2, '0')}
+                  </span>
+                  <span className="mt-1 block truncate font-display text-xl text-[var(--color-ink)]">
+                    <span className="accent-line">{next.name[lang]}</span>
+                  </span>
+                </span>
+                <span className="text-lg text-[var(--color-ink-soft)] transition-transform group-hover:translate-x-1" aria-hidden="true">
+                  →
+                </span>
+              </button>
             )}
           </div>
-
-          {/* Read on: the next project, like the next article at the foot of a page */}
-          {list.length > 1 && (
-            <button
-              onClick={() => onNavigate(next)}
-              className="group mt-8 flex w-full items-center gap-4 border-t border-[var(--color-line)] pt-6 text-left"
-            >
-              <span className="h-14 w-24 shrink-0 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-canvas)]">
-                {next.status !== 'private' && next.image ? (
-                  <img src={next.image} alt="" loading="lazy" className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
-                ) : (
-                  <span
-                    className="block h-full w-full"
-                    style={{ backgroundImage: 'repeating-linear-gradient(135deg, var(--color-line-strong) 0 1px, transparent 1px 7px)' }}
-                  />
-                )}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
-                  {lang === 'pl' ? 'Następny projekt' : 'Next project'} · {String(((at + 1) % list.length) + 1).padStart(2, '0')}
-                </span>
-                <span className="mt-1 block truncate font-display text-xl text-[var(--color-ink)]">
-                  <span className="accent-line">{next.name[lang]}</span>
-                </span>
-              </span>
-              <span className="text-lg text-[var(--color-ink-soft)] transition-transform group-hover:translate-x-1" aria-hidden="true">
-                →
-              </span>
-            </button>
-          )}
         </div>
+        {/* Outside the scroller so it stays in reach after scrolling down. */}
+        <button
+          onClick={onClose}
+          aria-label={t.close[lang]}
+          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#141414]/60 text-[#f5f2ec] backdrop-blur transition-colors hover:bg-[#141414]/80"
+        >
+          ✕
+        </button>
       </div>
     </div>
   )

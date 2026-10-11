@@ -30,7 +30,7 @@ const FEATURES: Feature[] = [
     label: { pl: 'Rezerwacje', en: 'Bookings' },
     desc: { pl: 'Kalendarz bez podwójnych terminów.', en: 'A calendar that never double-books.' },
     tech: ['PostgreSQL', 'Supabase'],
-    proof: ['clinic-calendar', 'restaurant-system', 'restaurant-booking', 'course-platform'],
+    proof: ['clinic-calendar', 'restaurant-system', 'course-platform'],
     weight: 2,
   },
   {
@@ -46,7 +46,7 @@ const FEATURES: Feature[] = [
     label: { pl: 'Powiadomienia', en: 'Notifications' },
     desc: { pl: 'Przypomnienia, mniej nieobecności.', en: 'Reminders, fewer no-shows.' },
     tech: ['Web Push', 'Edge Functions'],
-    proof: ['clinic-calendar', 'course-platform', 'restaurant-booking', 'service-reports'],
+    proof: ['clinic-calendar', 'course-platform', 'service-reports'],
     weight: 1,
   },
   {
@@ -54,7 +54,7 @@ const FEATURES: Feature[] = [
     label: { pl: 'Panel admina', en: 'Admin panel' },
     desc: { pl: 'Zarządzasz wszystkim z jednego miejsca.', en: 'You run everything from one place.' },
     tech: ['React', 'Angular', 'RBAC'],
-    proof: ['restaurant-booking', 'course-platform', 'restaurant-system'],
+    proof: ['course-platform', 'restaurant-system'],
     weight: 2,
   },
   {

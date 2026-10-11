@@ -12,6 +12,7 @@ import shotPizza from './img/pizza.webp'
 import shotSplitDeBill from './img/splitdebill.webp'
 import shotExplorePoland from './img/explore-poland.webp'
 import mikolajPhoto from './img/mikolaj-sitek.webp'
+import wojciechPhoto from './img/wojciech-nowicki.webp'
 
 export type Lang = 'pl' | 'en'
 export type LS = Record<Lang, string>
@@ -408,52 +409,6 @@ export const projects: Project[] = [
     about: {
       pl: 'Platforma pozwalająca sprzedawać własne kursy i zajęcia: katalog, terminarz dostępnych slotów, rezerwacje, panel administracyjny, komunikacja z uczestnikiem i przypomnienia. Model zbliżony do znanych platform kursowych, ale prowadzony przez jednego autora treści. Frontend działa jako PWA z service workerem i własną warstwą tłumaczeń. Projekt jest w trakcie realizacji — podgląd udostępnimy po wdrożeniu.',
       en: 'A platform for selling your own courses and classes: catalogue, calendar of available slots, bookings, an admin panel, participant messaging and reminders. The model is close to the familiar course platforms, but run by a single content author. The front-end is a PWA with a service worker and its own translation layer. The project is still in progress — preview once it ships.',
-    },
-  },
-  {
-    id: 'restaurant-booking',
-    name: { pl: 'Wizytówka restauracji z rezerwacjami', en: 'Restaurant site with bookings' },
-    category: 'landing',
-    year: '2025',
-    image: img('1539278383962-a7774385fa02'),
-    status: 'forSale',
-    tagline: {
-      pl: 'Strona lokalu i rezerwacje: stolik, wydarzenie albo wynajem całego lokalu.',
-      en: 'A venue site with bookings: a table, an event or a whole-venue hire.',
-    },
-    role: { pl: 'Projekt, wdrożenie i audyt', en: 'Design, build & audit' },
-    stack: ['Angular 17 + PWA', 'Node + Express', 'MongoDB / Mongoose', 'JWT + refresh', 'reCAPTCHA v3', 'Web Push', 'Playwright', 'Tailwind'],
-    highlights: [
-      {
-        pl: 'Trzy rodzaje rezerwacji w jednym modelu — stolik, wydarzenie i wynajem całego lokalu — a sprawdzenie kolizji rozumie, że wynajem lokalu wyklucza wszystkie pozostałe stoliki.',
-        en: 'Three kinds of booking in one model — table, event and whole-venue hire — with collision checks that know a venue hire rules out every remaining table.',
-      },
-      {
-        pl: 'Godziny otwarcia jako jedno źródło prawdy: ten sam rekord zasila stopkę strony, panel i walidację dostępnych terminów, więc strona nie obiecuje czegoś, czego system nie przyjmie.',
-        en: 'Opening hours as one source of truth: the same record feeds the site footer, the admin panel and slot validation, so the site cannot promise what the system will refuse.',
-      },
-      {
-        pl: 'Pełny cykl bezpieczeństwa: własny audyt (23 ustalenia, w tym 5 krytycznych), naprawy i 35 testów E2E pilnujących, żeby nie wróciły.',
-        en: 'A full security cycle: a self-run audit (23 findings, 5 critical), the fixes, and 35 end-to-end tests that keep them from coming back.',
-      },
-    ],
-    results: [
-      {
-        pl: 'Stoliki, wydarzenia i wynajem sali w jednym kalendarzu, bez kolizji terminów.',
-        en: 'Tables, events and venue hire in one calendar, with no clashing slots.',
-      },
-      {
-        pl: 'Godziny otwarcia zmieniane w jednym miejscu — strona i rezerwacje zawsze się zgadzają.',
-        en: 'Opening hours changed in one place — the site and the bookings always agree.',
-      },
-      {
-        pl: 'Luki wykryte w audycie bezpieczeństwa naprawione i pilnowane testami.',
-        en: 'Security audit findings fixed and guarded by tests.',
-      },
-    ],
-    about: {
-      pl: 'Strona restauracji połączona z systemem rezerwacji, w którym obsługa prowadzi wszystko z panelu: stoliki i sale, menu z kategoriami, godziny otwarcia, potwierdzenia i raporty dzienne. Panel jest osobną aplikacją instalowalną na telefonie, z wymuszoną aktualizacją pokazywaną tylko obsłudze — zainstalowana PWA nie ma przycisku odświeżania, więc administrator, który odłoży aktualizację, potrafi utknąć na starej wersji bez drogi wyjścia.',
-      en: 'A restaurant site wired to a booking system where staff run everything from one panel: tables and rooms, a categorised menu, opening hours, confirmations and daily reports. The panel is a separate app installable on a phone, with a forced update prompt shown only to staff — an installed PWA has no refresh button, so an admin who postpones an update can get stuck on an old version with no way out.',
     },
   },
   {
@@ -1064,7 +1019,7 @@ export const teamMembers: TeamMember[] = [
       pl: 'Zanim powstanie pierwsza makieta, rozmawia z klientem: zbiera wymagania, rozpisuje procesy i pilnuje, żeby zespół budował to, czego firma naprawdę potrzebuje. Na każdym etapie jest pierwszym kontaktem — wie, co dzieje się w projekcie i co będzie dalej.',
       en: 'Talks to the client before the first mockup: gathers requirements, maps the processes and makes sure the team builds what the business actually needs. The first point of contact at every stage — always knows where the project stands and what comes next.'
     },
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=800&fit=crop',
+    image: wojciechPhoto,
     theme: 'analysis',
     stack: [
       { icon: 'target', label: 'Discovery' },
@@ -1249,24 +1204,6 @@ export const testimonials: Testimonial[] = [
       en: 'The technician finishes the job, the customer signs the report with a finger on the tablet and it is in the system straight away. No more retyping paper forms at the office.',
     },
     role: { pl: 'Koordynator serwisu', en: 'Service coordinator' },
-    approved: false,
-  },
-  {
-    projectId: 'restaurant-booking',
-    sector: { pl: 'Restauracja', en: 'Restaurant' },
-    before: {
-      pl: 'Stoliki, wydarzenia i wynajem sali w osobnych kalendarzach, a godziny otwarcia do poprawiania w kilku miejscach.',
-      en: 'Tables, events and room hire in separate calendars, opening hours to fix in several places.',
-    },
-    after: {
-      pl: 'Wszystko w jednym kalendarzu bez kolizji terminów, a godziny zmienione raz zgadzają się na stronie i w rezerwacjach.',
-      en: 'Everything in one calendar with no clashing bookings, and hours changed once match on the site and in bookings.',
-    },
-    quote: {
-      pl: 'Stoliki, sale i wynajem całego lokalu prowadzimy z jednego panelu na telefonie. Goście rezerwują sami, a rano widzimy raport z całego dnia.',
-      en: 'Tables, rooms and whole-venue hire all run from one panel on the phone. Guests book on their own, and each morning we see the report for the day.',
-    },
-    role: { pl: 'Manager restauracji', en: 'Restaurant manager' },
     approved: false,
   },
 ]
