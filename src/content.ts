@@ -12,6 +12,7 @@ import shotPizza from './img/pizza.webp'
 import shotSplitDeBill from './img/splitdebill.webp'
 import shotExplorePoland from './img/explore-poland.webp'
 import shotParkiet from './img/parkiet.webp'
+import shotCoursePlatform from './img/course-platform.webp'
 import mikolajPhoto from './img/mikolaj-sitek.webp'
 import wojciechPhoto from './img/wojciech-nowicki.webp'
 
@@ -375,7 +376,7 @@ export const projects: Project[] = [
     name: { pl: 'Platforma sprzedaży kursów', en: 'Course sales platform' },
     category: 'commerce',
     year: '2026',
-    image: img('1627542557169-5ed71c66ed85'),
+    image: shotCoursePlatform,
     status: 'ongoing',
     tagline: {
       pl: 'Katalog kursów, terminarz slotów i rezerwacje ze ścieżką potwierdzenia.',
@@ -1010,6 +1011,8 @@ export type TeamMember = {
   education: LS;
   bio: LS;
   image: string;
+  /** CSS object-position for the badge photo, when the default top crop misses the face. */
+  imagePosition?: string;
   /** Picks the hue and the background texture of this person's card face. */
   theme: 'design' | 'security' | 'analysis';
   /** Three tools or methods this person is known for, shown on the card. */
@@ -1048,6 +1051,7 @@ export const teamMembers: TeamMember[] = [
       en: 'Designs the back-end and APIs so an app stays fast under heavy traffic. Builds security in from the first line of code — sign-in, permissions, data protection and tests before every release.'
     },
     image: jakubPhoto,
+    imagePosition: '50% 65%',
     theme: 'security',
     stack: [
       { icon: 'key', label: 'JWT' },

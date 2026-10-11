@@ -193,6 +193,7 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
             draggable={false}
             loading="lazy"
             decoding="async"
+            style={member.imagePosition ? { objectPosition: member.imagePosition } : undefined}
             className="h-full w-full object-cover object-top grayscale transition-all duration-500 group-hover:grayscale-0"
           />
         </div>
