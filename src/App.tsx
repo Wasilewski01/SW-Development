@@ -2403,12 +2403,6 @@ function Contact({ lang, onOpenForm }: { lang: Lang; onOpenForm: (message?: stri
 /* ---------------------------------------------------------------- Footer */
 
 function Footer({ lang }: { lang: Lang }) {
-  const links = [
-    { label: 'GitHub', href: 'https://github.com' },
-    { label: 'Dribbble', href: 'https://dribbble.com' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
-  ]
-
   // Closes the page the way the logo opens it: the mark, large and centred.
   return (
     <footer className="relative z-[2] mx-auto w-full max-w-6xl px-4 pb-12 pt-8 sm:px-8">
@@ -2421,24 +2415,10 @@ function Footer({ lang }: { lang: Lang }) {
           {CONTACT_EMAIL}
         </a>
       </div>
-      <div className="mt-14 flex flex-col items-center justify-between gap-4 font-mono text-[11px] text-[var(--color-ink-faint)] sm:flex-row">
-        <span>
-          © {new Date().getFullYear()} {t.brand[lang]}
-        </span>
-        <div className="flex gap-6">
-          {links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="accent-line before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] hover:text-[var(--color-ink)]"
-            >
-              {l.label}
-            </a>
-          ))}
-        </div>
-      </div>
+      {/* No social links: the company has no shared profiles of its own. */}
+      <p className="mt-14 text-center font-mono text-[11px] text-[var(--color-ink-faint)]">
+        © {new Date().getFullYear()} {t.brand[lang]}
+      </p>
     </footer>
   )
 }
