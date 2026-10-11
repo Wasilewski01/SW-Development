@@ -1740,26 +1740,28 @@ function LockedCover({ label }: { label: string }) {
 }
 
 const statusStyles: Record<NonNullable<Project['status']>, { label: keyof typeof t; className: string }> = {
+  // Solid canvas, not the see-through surface: over a light screenshot the
+  // translucent badge let its text vanish (mint on white in dark mode).
   // Withheld reads neutral, in-flight reads amber, and the one that invites a
   // conversation is the only badge allowed to use the positive colour.
   private: {
     label: 'statusPrivate',
-    className: 'border-[var(--color-line-strong)] bg-[var(--color-surface)]/90 text-[var(--color-ink-soft)]',
+    className: 'border-[var(--color-line-strong)] bg-[var(--color-canvas)] text-[var(--color-ink-soft)]',
   },
   ongoing: {
     label: 'statusOngoing',
-    className: 'border-[var(--color-warn)]/40 bg-[var(--color-surface)]/90 text-[var(--color-warn)]',
+    className: 'border-[var(--color-warn)]/40 bg-[var(--color-canvas)] text-[var(--color-warn)]',
   },
   forSale: {
     label: 'statusForSale',
-    className: 'border-[var(--color-positive)]/40 bg-[var(--color-surface)]/90 text-[var(--color-positive)]',
+    className: 'border-[var(--color-positive)]/40 bg-[var(--color-canvas)] text-[var(--color-positive)]',
   },
 }
 
 function StatusBadge({ status, lang }: { status: NonNullable<Project['status']>; lang: Lang }) {
   const style = statusStyles[status]
   return (
-    <span className={`rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium backdrop-blur ${style.className}`}>
+    <span className={`rounded-full border px-2.5 py-1 font-mono text-[10px] font-medium shadow-[0_4px_12px_-4px_rgba(20,20,20,0.35)] ${style.className}`}>
       {(t[style.label] as LS)[lang]}
     </span>
   )
