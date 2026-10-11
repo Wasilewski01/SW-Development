@@ -454,10 +454,11 @@ export const projects: Project[] = [
       },
     ],
     about: {
-      pl: 'Projekt pokazujący, jak buduje się system, w którym liczy się każda milisekunda i każdy grosz. Cena na tej giełdzie nie przychodzi z zewnątrz — to cena ostatniej transakcji, czyli moment, w którym czyjeś kupno spotkało się z czyjąś sprzedażą. Gdy baza nie nadąża, giełda zwalnia zamiast gubić zdarzenia, a metryki w Grafanie pokazują, gdzie dokładnie się korkuje. Kod jest otwarty, z opisem architektury i wynikami pomiarów.',
-      en: 'A project that shows how to build a system where every millisecond and every grosz counts. The price on this exchange does not come from outside — it is the price of the last trade, the moment someone’s buy met someone’s sell. When the database falls behind, the exchange slows down instead of losing events, and Grafana dashboards show exactly where the bottleneck is. The code is open, with the architecture described and the benchmarks published.',
+      pl: 'Projekt pokazujący, jak buduje się system, w którym liczy się każda milisekunda i każdy grosz. Cena na tej giełdzie nie przychodzi z zewnątrz — to cena ostatniej transakcji, czyli moment, w którym czyjeś kupno spotkało się z czyjąś sprzedażą. Gdy baza nie nadąża, giełda zwalnia zamiast gubić zdarzenia, a metryki w Grafanie pokazują, gdzie dokładnie się korkuje. Kod jest otwarty, z opisem architektury i wynikami pomiarów. Demo na stronie odtwarza nagraną sesję giełdy z botami, a zlecenia składane w przeglądarce są symulowane.',
+      en: 'A project that shows how to build a system where every millisecond and every grosz counts. The price on this exchange does not come from outside — it is the price of the last trade, the moment someone’s buy met someone’s sell. When the database falls behind, the exchange slows down instead of losing events, and Grafana dashboards show exactly where the bottleneck is. The code is open, with the architecture described and the benchmarks published. The demo replays a recorded exchange session with bots, and orders placed in the browser are simulated.',
     },
-    repoUrl: 'https://github.com/Sitkowski01/mini-exchange',
+    liveUrl: '/parkiet/',
+    repoUrl: 'https://github.com/Sitkowski01/parkiet-exchange',
   },
   {
     id: 'mk-cycling',
