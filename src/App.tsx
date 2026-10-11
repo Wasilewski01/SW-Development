@@ -25,6 +25,8 @@ import {
   type FaqAuthor,
   sectionKeys,
   sectionNumbers,
+  privacySections,
+  privacyUpdated,
 } from './content'
 import { SWMark, SectionHeader, finePointer, scrollToSection, useDragScroll } from './ui'
 import { isTypingTarget, useDialog } from './dialog'
@@ -653,6 +655,8 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | Project['category']>('all')
   const [open, setOpen] = useState<Project | null>(null)
   const [formOpen, setFormOpen] = useState(false)
+  // The policy has its own address, so a link can open it straight away.
+  const [privacyOpen, setPrivacyOpen] = useState(() => window.location.hash === '#polityka-prywatnosci')
   // Text the contact form opens with — the brief ticket writes its summary here.
   const [formMessage, setFormMessage] = useState('')
   const openForm = (message = '') => {
@@ -852,7 +856,7 @@ export default function App() {
           </div>
         </main>
 
-        <Footer lang={lang} />
+        <Footer lang={lang} onOpenPrivacy={() => setPrivacyOpen(true)} />
 
         {open && (
           <CaseStudy
@@ -863,7 +867,15 @@ export default function App() {
             onClose={() => setOpen(null)}
           />
         )}
-        {formOpen && <ContactDialog lang={lang} initialMessage={formMessage} onClose={() => setFormOpen(false)} />}
+        {formOpen && (
+          <ContactDialog
+            lang={lang}
+            initialMessage={formMessage}
+            onOpenPrivacy={() => setPrivacyOpen(true)}
+            onClose={() => setFormOpen(false)}
+          />
+        )}
+        {privacyOpen && <PrivacyDialog lang={lang} onClose={() => setPrivacyOpen(false)} />}
       </div>
     </MotionConfig>
   )
@@ -2135,10 +2147,12 @@ type SendState = 'idle' | 'sending' | 'sent' | 'mailed' | 'failed'
 function ContactDialog({
   lang,
   initialMessage = '',
+  onOpenPrivacy,
   onClose,
 }: {
   lang: Lang
   initialMessage?: string
+  onOpenPrivacy: () => void
   onClose: () => void
 }) {
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -2298,6 +2312,16 @@ function ContactDialog({
               >
                 {state === 'sending' ? t.formSending[lang] : state === 'failed' ? t.formRetry[lang] : t.formSend[lang]}
               </button>
+              <p className="text-center text-xs leading-relaxed text-[var(--color-ink-faint)]">
+                {t.formPrivacyNote[lang]}{' '}
+                <button
+                  type="button"
+                  onClick={onOpenPrivacy}
+                  className="accent-line text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
+                >
+                  {t.privacyTitle[lang].toLowerCase()}
+                </button>
+              </p>
             </form>
 
             <p className="mt-5 text-center font-mono text-xs text-[var(--color-ink-faint)]">
@@ -2311,6 +2335,59 @@ function ContactDialog({
             </p>
           </>
         )}
+      </div>
+    </div>
+  )
+}
+
+/* --------------------------------------------------------------- Privacy */
+
+/** The privacy policy, as a modal like the contact form; #polityka-prywatnosci opens it. */
+function PrivacyDialog({ lang, onClose }: { lang: Lang; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialog(dialogRef, onClose)
+
+  return (
+    <div className="fixed inset-0 z-[130] flex items-end justify-center sm:items-center sm:p-6">
+      <div
+        className="absolute inset-0 bg-[rgba(20,20,20,0.6)] backdrop-blur-sm"
+        style={{ animation: 'fade-in 0.25s ease' }}
+        onClick={onClose}
+      />
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="privacy-title"
+        className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-y-auto rounded-t-2xl bg-[var(--color-surface)] p-6 shadow-2xl backdrop-blur-xl sm:rounded-2xl sm:p-9"
+        style={{ animation: 'tour-pop 0.3s cubic-bezier(0.22,1,0.36,1)' }}
+      >
+        <button
+          onClick={onClose}
+          aria-label={t.close[lang]}
+          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-canvas)] hover:text-[var(--color-ink)]"
+        >
+          ✕
+        </button>
+        <h2 id="privacy-title" className="pr-10 font-display text-3xl font-normal">
+          {t.privacyTitle[lang]}
+        </h2>
+        <span className="mt-3 block h-[1.5px] w-12 bg-[var(--color-accent)]" aria-hidden="true" />
+        <p className="mt-4 font-mono text-[11px] text-[var(--color-ink-faint)]">
+          {t.privacyUpdatedLabel[lang]} {privacyUpdated[lang]}
+        </p>
+        {privacySections.map((s, i) => (
+          <section key={i} className="mt-7">
+            <h3 className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-faint)]">
+              {String(i + 1).padStart(2, '0')} · {s.title[lang]}
+            </h3>
+            {s.body.map((b, j) => (
+              <p key={j} className="mt-2 text-[15px] leading-relaxed text-[var(--color-ink-soft)]">
+                {b[lang]}
+              </p>
+            ))}
+          </section>
+        ))}
       </div>
     </div>
   )
@@ -2402,7 +2479,7 @@ function Contact({ lang, onOpenForm }: { lang: Lang; onOpenForm: (message?: stri
 
 /* ---------------------------------------------------------------- Footer */
 
-function Footer({ lang }: { lang: Lang }) {
+function Footer({ lang, onOpenPrivacy }: { lang: Lang; onOpenPrivacy: () => void }) {
   // Closes the page the way the logo opens it: the mark, large and centred.
   return (
     <footer className="relative z-[2] mx-auto w-full max-w-6xl px-4 pb-12 pt-8 sm:px-8">
@@ -2415,10 +2492,21 @@ function Footer({ lang }: { lang: Lang }) {
           {CONTACT_EMAIL}
         </a>
       </div>
-      {/* No social links: the company has no shared profiles of its own. */}
-      <p className="mt-14 text-center font-mono text-[11px] text-[var(--color-ink-faint)]">
-        © {new Date().getFullYear()} {t.brand[lang]}
-      </p>
+      <div className="mt-14 flex flex-col items-center justify-between gap-4 font-mono text-[11px] text-[var(--color-ink-faint)] sm:flex-row">
+        <span>
+          © {new Date().getFullYear()} {t.brand[lang]}
+        </span>
+        <a
+          href="#polityka-prywatnosci"
+          onClick={(e) => {
+            e.preventDefault()
+            onOpenPrivacy()
+          }}
+          className="accent-line before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] hover:text-[var(--color-ink)]"
+        >
+          {t.privacyTitle[lang]}
+        </a>
+      </div>
     </footer>
   )
 }

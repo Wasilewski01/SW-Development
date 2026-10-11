@@ -866,6 +866,9 @@ export const t = {
   },
   formRetry: { pl: 'Spróbuj ponownie', en: 'Try again' },
   formOr: { pl: 'albo napisz wprost:', en: 'or write directly:' },
+  privacyTitle: { pl: 'Polityka prywatności', en: 'Privacy policy' },
+  privacyUpdatedLabel: { pl: 'Ostatnia aktualizacja:', en: 'Last updated:' },
+  formPrivacyNote: { pl: 'Odpowiadamy na podany adres. Szczegóły:', en: 'We reply to the address you give. Details:' },
   close: { pl: 'Zamknij', en: 'Close' },
   aboutSectionTitle: { pl: 'O nas', en: 'About us' },
   aboutSectionBody: {
@@ -1274,3 +1277,92 @@ export const sectionKeys = (['work', 'about', 'process', 'stack', 'testimonials'
 
 /** Every section's number, shown in its header. */
 export const sectionNumbers = Object.fromEntries(sectionKeys.map((k, i) => [k, i + 1])) as Record<SectionKey, number>
+
+/* ------------------------------------------------------- Privacy policy */
+
+/**
+ * Says only what the site really does: a contact form sent through Web3Forms,
+ * hosting on Vercel, fonts from Google, and a theme remembered in the browser.
+ * No analytics, no ads, no tracking cookies — if any of that changes, this
+ * text changes with it. The controller is named by brand for now; add the
+ * registered entity (name, NIP, address) once there is one.
+ */
+export const privacyUpdated: LS = { pl: '11 października 2026', en: '11 October 2026' }
+
+export const privacySections: { title: LS; body: LS[] }[] = [
+  {
+    title: { pl: 'Kto odpowiada za Twoje dane', en: 'Who is responsible for your data' },
+    body: [
+      {
+        pl: 'Administratorem danych jest SWN Development. We wszystkich sprawach dotyczących danych osobowych napisz na hello@swndevelopment.pl.',
+        en: 'The data controller is SWN Development. For anything about your personal data, write to hello@swndevelopment.pl.',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Jakie dane zbieramy', en: 'What we collect' },
+    body: [
+      {
+        pl: 'Tylko to, co sam nam przekażesz: imię, adres e-mail i treść wiadomości z formularza kontaktowego albo z e-maila wysłanego bezpośrednio.',
+        en: 'Only what you give us: your name, email address and message, from the contact form or an email you send directly.',
+      },
+      {
+        pl: 'Nie używamy narzędzi analitycznych, reklam ani plików cookies śledzących.',
+        en: 'We use no analytics, no ads and no tracking cookies.',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Po co i na jakiej podstawie', en: 'Why, and on what basis' },
+    body: [
+      {
+        pl: 'Żeby odpowiedzieć na wiadomość i — jeśli o to prosisz — przygotować wycenę lub ofertę. Podstawą są działania przed zawarciem umowy na Twoje żądanie (art. 6 ust. 1 lit. b RODO) oraz nasz prawnie uzasadniony interes, czyli prowadzenie korespondencji (art. 6 ust. 1 lit. f RODO).',
+        en: 'To answer your message and, if you ask, prepare a quote or proposal. The legal basis is taking steps at your request before entering a contract (Art. 6(1)(b) GDPR) and our legitimate interest in handling correspondence (Art. 6(1)(f) GDPR).',
+      },
+      {
+        pl: 'Podanie danych jest dobrowolne, ale bez adresu e-mail nie mamy jak odpisać.',
+        en: 'Giving us your data is voluntary, but without an email address we cannot reply.',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Komu je powierzamy', en: 'Who processes them for us' },
+    body: [
+      {
+        pl: 'Formularz dostarcza wiadomość na naszą skrzynkę przez usługę Web3Forms. Strona działa na serwerach Vercel, które — jak każdy serwer — zapisują techniczne logi połączeń, w tym adres IP. Czcionki ładują się z Google Fonts, więc Google otrzymuje adres IP Twojej przeglądarki.',
+        en: 'The form delivers your message to our inbox through Web3Forms. The site is hosted by Vercel, whose servers — like any server — keep technical connection logs, including IP addresses. Fonts load from Google Fonts, so Google receives your browser’s IP address.',
+      },
+      {
+        pl: 'Jeśli któryś z tych dostawców przetwarza dane poza Europejskim Obszarem Gospodarczym, dzieje się to na podstawie mechanizmów przewidzianych w RODO, np. standardowych klauzul umownych. Nie sprzedajemy ani nie udostępniamy danych nikomu innemu.',
+        en: 'Where any of these providers processes data outside the European Economic Area, it does so under a mechanism the GDPR provides for, such as standard contractual clauses. We do not sell or share your data with anyone else.',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Jak długo je trzymamy', en: 'How long we keep them' },
+    body: [
+      {
+        pl: 'Przez czas rozmowy. Jeśli nie dojdzie do współpracy, usuwamy korespondencję najpóźniej 12 miesięcy po ostatniej wiadomości. Jeśli zaczniemy współpracę, dane obowiązują zasady z umowy.',
+        en: 'For as long as we are talking. If no work comes of it, we delete the correspondence no later than 12 months after the last message. If we start working together, the contract’s terms apply.',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Twoje prawa', en: 'Your rights' },
+    body: [
+      {
+        pl: 'Możesz poprosić o dostęp do swoich danych, ich sprostowanie, usunięcie, ograniczenie przetwarzania lub przeniesienie, a także wnieść sprzeciw. Wystarczy e-mail na hello@swndevelopment.pl. Masz też prawo złożyć skargę do Prezesa Urzędu Ochrony Danych Osobowych.',
+        en: 'You can ask to access, correct, delete, restrict or port your data, and you can object to its processing. An email to hello@swndevelopment.pl is enough. You can also lodge a complaint with the Polish data protection authority (Prezes UODO).',
+      },
+    ],
+  },
+  {
+    title: { pl: 'Pamięć przeglądarki', en: 'Browser storage' },
+    body: [
+      {
+        pl: 'Strona zapamiętuje w Twojej przeglądarce wybrany motyw (jasny lub ciemny) i to, że ekran powitalny już się pokazał. Te informacje zostają u Ciebie i nie trafiają do nas.',
+        en: 'The site remembers in your browser which theme you picked (light or dark) and that the intro screen has already played. This stays on your device and never reaches us.',
+      },
+    ],
+  },
+]
