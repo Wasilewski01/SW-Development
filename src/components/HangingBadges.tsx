@@ -176,9 +176,12 @@ function Badge({ member, index, lang }: { member: TeamMember; index: number; lan
         <div className="mx-auto mb-3 h-2 w-10 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-canvas)]" />
 
         <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.16em] text-[var(--color-ink-faint)]">
-          <span className="flex items-center gap-1.5">
+          {/* Baseline, not items-center: the logo font sits low in its line box,
+              which left "Development" floating above the middle of "SWN". The
+              lift is half the cap-height gap, so both words share one centre. */}
+          <span className="flex items-baseline gap-1.5">
             <span className="font-display font-logo text-[13px] normal-case tracking-[-0.04em] text-[var(--color-ink)]">SWN</span>
-            Development
+            <span className="-translate-y-[1.5px]">Development</span>
           </span>
           <span>{id}</span>
         </div>
