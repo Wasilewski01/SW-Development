@@ -11,6 +11,7 @@ import shotIceCream from './img/lody.webp'
 import shotPizza from './img/pizza.webp'
 import shotSplitDeBill from './img/splitdebill.webp'
 import shotExplorePoland from './img/explore-poland.webp'
+import shotParkiet from './img/parkiet.webp'
 import mikolajPhoto from './img/mikolaj-sitek.webp'
 import wojciechPhoto from './img/wojciech-nowicki.webp'
 
@@ -410,6 +411,52 @@ export const projects: Project[] = [
       pl: 'Platforma pozwalająca sprzedawać własne kursy i zajęcia: katalog, terminarz dostępnych slotów, rezerwacje, panel administracyjny, komunikacja z uczestnikiem i przypomnienia. Model zbliżony do znanych platform kursowych, ale prowadzony przez jednego autora treści. Frontend działa jako PWA z service workerem i własną warstwą tłumaczeń. Projekt jest w trakcie realizacji — podgląd udostępnimy po wdrożeniu.',
       en: 'A platform for selling your own courses and classes: catalogue, calendar of available slots, bookings, an admin panel, participant messaging and reminders. The model is close to the familiar course platforms, but run by a single content author. The front-end is a PWA with a service worker and its own translation layer. The project is still in progress — preview once it ships.',
     },
+  },
+  {
+    id: 'parkiet',
+    name: { pl: 'Parkiet — silnik giełdy', en: 'Parkiet — exchange engine' },
+    category: 'web',
+    year: '2026',
+    image: shotParkiet,
+    tagline: {
+      pl: 'Silnik giełdy, który kojarzy zlecenia jak GPW, z terminalem notowań na żywo w przeglądarce.',
+      en: 'An exchange engine that matches orders the way the Warsaw exchange does, with a live trading terminal in the browser.',
+    },
+    role: { pl: 'Architektura, backend i frontend', en: 'Architecture, backend & front-end' },
+    stack: ['Java 21', 'Spring Boot 4', 'PostgreSQL', 'Kafka', 'WebSocket', 'Testcontainers', 'Prometheus + Grafana', 'JMH + k6'],
+    highlights: [
+      {
+        pl: 'Arkusz zleceń z priorytetem ceny i czasu: zlecenia z limitem i po każdej cenie, częściowe realizacje, anulowanie. Ceny liczone w groszach na liczbach całkowitych, nigdy na ułamkach.',
+        en: 'An order book with price-time priority: limit and market orders, partial fills, cancellation. Prices kept in whole grosze, never in floating point.',
+      },
+      {
+        pl: 'Jeden wątek na spółkę — kojarzenie bez blokad. Dziennik zdarzeń w PostgreSQL, z którego giełda odtwarza arkusz po restarcie, a do Kafki zdarzenia trafiają przez transactional outbox.',
+        en: 'One thread per instrument, so matching needs no locks. An event journal in PostgreSQL rebuilds the book after a restart, and events reach Kafka through a transactional outbox.',
+      },
+      {
+        pl: 'Terminal w przeglądarce: notowania przez WebSocket, wykres świecowy na canvasie, arkusz z głębokością, formularz zlecenia i taśma transakcji. Ruch generują boty startujące od kursów z GPW.',
+        en: 'A browser terminal: quotes over WebSocket, a candlestick chart on canvas, a depth-of-book view, an order form and a trade tape. Bots seeded from Warsaw exchange prices keep the market moving.',
+      },
+    ],
+    results: [
+      {
+        pl: 'Sam arkusz kojarzy 3,3 mln zleceń/s, a silnik na sześciu spółkach 2,5 mln/s (pomiar JMH na laptopie).',
+        en: 'The order book alone matches 3.3 million orders/s, and the engine across six instruments 2.5 million/s (JMH on a laptop).',
+      },
+      {
+        pl: 'Pełna droga HTTP → silnik → baza → Kafka przy 1000 zleceń/s odpowiada w 2,5 ms (mediana, k6).',
+        en: 'The full HTTP → engine → database → Kafka path answers in 2.5 ms at 1,000 orders/s (median, k6).',
+      },
+      {
+        pl: 'Testy mutacyjne wyłapują 93% celowo wprowadzonych błędów, a 30 000 losowych zleceń daje te same zdarzenia co niezależna implementacja-wyrocznia.',
+        en: 'Mutation testing catches 93% of deliberately injected bugs, and 30,000 random orders produce the same events as an independent reference implementation.',
+      },
+    ],
+    about: {
+      pl: 'Projekt pokazujący, jak buduje się system, w którym liczy się każda milisekunda i każdy grosz. Cena na tej giełdzie nie przychodzi z zewnątrz — to cena ostatniej transakcji, czyli moment, w którym czyjeś kupno spotkało się z czyjąś sprzedażą. Gdy baza nie nadąża, giełda zwalnia zamiast gubić zdarzenia, a metryki w Grafanie pokazują, gdzie dokładnie się korkuje. Kod jest otwarty, z opisem architektury i wynikami pomiarów.',
+      en: 'A project that shows how to build a system where every millisecond and every grosz counts. The price on this exchange does not come from outside — it is the price of the last trade, the moment someone’s buy met someone’s sell. When the database falls behind, the exchange slows down instead of losing events, and Grafana dashboards show exactly where the bottleneck is. The code is open, with the architecture described and the benchmarks published.',
+    },
+    repoUrl: 'https://github.com/Sitkowski01/mini-exchange',
   },
   {
     id: 'mk-cycling',
