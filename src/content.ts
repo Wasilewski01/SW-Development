@@ -61,52 +61,6 @@ const img = (id: string, w = 900, h = 640) =>
 
 export const projects: Project[] = [
   {
-    id: 'dls',
-    name: { pl: 'System grafikowy DLS', en: 'DLS scheduling system' },
-    category: 'web',
-    year: '2026',
-    image: '',
-    status: 'private',
-    tagline: {
-      pl: 'Grafik pracy i flota pojazdów w jednym systemie, pisanym pod reguły firmy.',
-      en: 'Staff scheduling and vehicle fleet in one system, built around a company’s rules.',
-    },
-    role: { pl: 'Analiza, backend i frontend', en: 'Analysis, backend & front-end' },
-    stack: ['Angular 18', 'Tailwind CSS', 'Node + Express', 'MongoDB / Mongoose', 'Socket.IO', 'JWT', 'Playwright'],
-    highlights: [
-      {
-        pl: 'Układanie grafiku na podstawie dyspozycyjności zgłaszanej przez pracowników, z ewidencją godzin i nieobecności.',
-        en: 'Schedules built from availability submitted by staff, with hours and absences tracked alongside.',
-      },
-      {
-        pl: 'Ewidencja floty: przypisania pojazdów, pojazdy rezerwowe, warsztat i statusy dzienne.',
-        en: 'Fleet register: vehicle assignments, reserve vehicles, workshop flow and daily statuses.',
-      },
-      {
-        pl: 'Aplikacja mobile-first z komunikacją w czasie rzeczywistym i uprawnieniami rozdzielonymi per rola.',
-        en: 'A mobile-first app with real-time updates and permissions split per role.',
-      },
-    ],
-    results: [
-      {
-        pl: 'Grafik i flota w jednym miejscu zamiast arkusza i osobnego rejestru pojazdów.',
-        en: 'Schedule and fleet in one place instead of a spreadsheet plus a separate vehicle register.',
-      },
-      {
-        pl: 'Dyspozycyjność zbierana od pracowników w aplikacji, a nie telefonicznie i na kartkach.',
-        en: 'Availability collected from staff in the app, not by phone and on paper.',
-      },
-      {
-        pl: 'Każdy widzi tylko to, co dotyczy jego roli — kierowca, dyspozytor, kadry.',
-        en: 'Everyone sees only what concerns their role — driver, dispatcher, HR.',
-      },
-    ],
-    about: {
-      pl: 'Wewnętrzny system dla firmy transportowej, w którym grafik pracy i zarządzanie flotą są jednym procesem, a nie dwoma osobnymi narzędziami. Zamiast uniwersalnego kalendarza aplikacja odwzorowuje reguły tej konkretnej firmy: sposób zbierania dyspozycyjności, zasady przydziału pojazdów, obieg zgłoszeń warsztatowych i rozliczanie czasu pracy. Projekt prywatny — podgląd i repozytorium pozostają niedostępne.',
-      en: 'An internal system for a transport company where staffing and fleet management are one process rather than two separate tools. Instead of a generic calendar, the app encodes this company’s own rules: how availability is collected, how vehicles are assigned, how workshop tickets travel and how working time is settled. A private project — preview and repository stay closed.',
-    },
-  },
-  {
     id: 'clinic-calendar',
     name: { pl: 'Kalendarz gabinetu', en: 'Clinic calendar' },
     category: 'mobile',
@@ -1205,24 +1159,6 @@ export const testimonials: Testimonial[] = [
       en: 'The schedule, passes and company billing used to live in three places. Now I open one app on my phone in the morning and see the whole day, and patients get their reminders on their own.',
     },
     role: { pl: 'Właścicielka gabinetu', en: 'Clinic owner' },
-    approved: false,
-  },
-  {
-    projectId: 'dls',
-    sector: { pl: 'Transport', en: 'Transport' },
-    before: {
-      pl: 'Grafik w arkuszu, pojazdy w osobnym rejestrze, dyspozycyjność zbierana telefonicznie i na kartkach.',
-      en: 'Schedule in a spreadsheet, vehicles in a separate register, availability collected by phone and on paper.',
-    },
-    after: {
-      pl: 'Grafik i flota w jednym systemie, dyspozycyjność zgłaszana w aplikacji, a każdy widzi tylko to, co dotyczy jego roli.',
-      en: 'Schedule and fleet in one system, availability submitted in the app, and everyone sees only what concerns their role.',
-    },
-    quote: {
-      pl: 'Nikt nie kazał nam zmieniać sposobu pracy pod program. Najpierw rozpisali nasze zasady przydziału aut i zbierania dyspozycyjności, dopiero potem zaczęli pisać kod.',
-      en: 'Nobody asked us to change how we work to suit the software. They wrote down our rules for assigning vehicles and collecting availability first, and only then started coding.',
-    },
-    role: { pl: 'Kierownik floty', en: 'Fleet manager' },
     approved: false,
   },
   {

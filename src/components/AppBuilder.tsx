@@ -22,7 +22,7 @@ const FEATURES: Feature[] = [
     label: { pl: 'Konta i logowanie', en: 'Accounts & login' },
     desc: { pl: 'Klienci mają swoje konto i historię.', en: 'Customers get an account and a history.' },
     tech: ['Supabase Auth', 'Firebase Auth', 'JWT'],
-    proof: ['clinic-calendar', 'chart-scanner', 'dls'],
+    proof: ['clinic-calendar', 'chart-scanner'],
     weight: 1,
   },
   {
@@ -78,7 +78,7 @@ const FEATURES: Feature[] = [
     label: { pl: 'Na żywo', en: 'Real-time' },
     desc: { pl: 'Czat i statusy bez odświeżania.', en: 'Chat and statuses without refreshing.' },
     tech: ['Socket.IO', 'Redis'],
-    proof: ['dls', 'parkiet', 'service-reports', 'party-game'],
+    proof: ['parkiet', 'service-reports', 'party-game'],
     weight: 2,
   },
   {
