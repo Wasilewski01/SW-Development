@@ -11,7 +11,7 @@ import shotIceCream from './img/lody.webp'
 import shotPizza from './img/pizza.webp'
 import shotSplitDeBill from './img/splitdebill.webp'
 import shotExplorePoland from './img/explore-poland.webp'
-import shotParkiet from './img/parkiet.webp'
+import shotBalanceLab from './img/balance-lab.webp'
 import shotCoursePlatform from './img/course-platform.webp'
 import mikolajPhoto from './img/mikolaj-sitek.webp'
 import wojciechPhoto from './img/wojciech-nowicki.webp'
@@ -368,51 +368,51 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 'parkiet',
-    name: { pl: 'Parkiet — silnik giełdy', en: 'Parkiet — exchange engine' },
+    id: 'balance-lab',
+    name: { pl: 'Balance Lab — laboratorium balansu gier', en: 'Balance Lab — a game balance lab' },
     category: 'web',
     year: '2026',
-    image: shotParkiet,
+    image: shotBalanceLab,
     tagline: {
-      pl: 'Silnik giełdy, który kojarzy zlecenia jak GPW, z terminalem notowań na żywo w przeglądarce.',
-      en: 'An exchange engine that matches orders the way the Warsaw exchange does, with a live trading terminal in the browser.',
+      pl: 'Boty rozgrywają tysiące partii planszówki i pokazują, które karty są za mocne, które martwe i czy pierwszy gracz ma przewagę.',
+      en: 'Bots play thousands of board game matches and show which cards are too strong, which are dead and whether the first player has an edge.',
     },
     role: { pl: 'Architektura, backend i frontend', en: 'Architecture, backend & front-end' },
-    stack: ['Java 21', 'Spring Boot 4', 'PostgreSQL', 'Kafka', 'WebSocket', 'Testcontainers', 'Prometheus + Grafana', 'JMH + k6'],
+    stack: ['C# / .NET 10', 'ASP.NET Core', 'SignalR', 'PostgreSQL', 'React', 'TypeScript', 'WebAssembly', 'Playwright'],
     highlights: [
       {
-        pl: 'Arkusz zleceń z priorytetem ceny i czasu: zlecenia z limitem i po każdej cenie, częściowe realizacje, anulowanie. Ceny liczone w groszach na liczbach całkowitych, nigdy na ułamkach.',
-        en: 'An order book with price-time priority: limit and market orders, partial fills, cancellation. Prices kept in whole grosze, never in floating point.',
+        pl: 'Boty o różnej sile — od losowego, przez zachłanny z pięcioma stylami gry, po MCTS i ISMCTS, który radzi sobie z ukrytymi kartami przeciwnika.',
+        en: 'Bots of different strength — from random, through greedy with five play styles, to MCTS and ISMCTS, which copes with the opponent’s hidden cards.',
       },
       {
-        pl: 'Jeden wątek na spółkę — kojarzenie bez blokad. Dziennik zdarzeń w PostgreSQL, z którego giełda odtwarza arkusz po restarcie, a do Kafki zdarzenia trafiają przez transactional outbox.',
-        en: 'One thread per instrument, so matching needs no locks. An event journal in PostgreSQL rebuilds the book after a restart, and events reach Kafka through a transactional outbox.',
+        pl: 'Raport balansu: przewaga miejsca przy stole, karty martwe i za mocne, ranking strategii Elo oraz porównanie poprawki zasad z oryginałem na tych samych rozdaniach. Każda liczba ma przedział ufności, więc widać, co jest efektem, a co szumem.',
+        en: 'A balance report: seat advantage, dead and overpowered cards, an Elo ranking of strategies and a comparison of a rules tweak against the original on the same deals. Every number comes with a confidence interval, so you can tell an effect from noise.',
       },
       {
-        pl: 'Terminal w przeglądarce: notowania przez WebSocket, wykres świecowy na canvasie, arkusz z głębokością, formularz zlecenia i taśma transakcji. Ruch generują boty startujące od kursów z GPW.',
-        en: 'A browser terminal: quotes over WebSocket, a candlestick chart on canvas, a depth-of-book view, an order form and a trade tape. Bots seeded from Warsaw exchange prices keep the market moving.',
+        pl: 'Gra na żywo z ludźmi i botami przez SignalR: serwer jest sędzią, każdy gracz widzi tylko swoje karty, a każdą partię można obejrzeć ruch po ruchu z suwakiem.',
+        en: 'Live play with people and bots over SignalR: the server is the referee, each player sees only their own cards, and every game can be replayed move by move with a slider.',
       },
     ],
     results: [
       {
-        pl: 'Sam arkusz kojarzy 3,3 mln zleceń/s, a silnik na sześciu spółkach 2,5 mln/s (pomiar JMH na laptopie).',
-        en: 'The order book alone matches 3.3 million orders/s, and the engine across six instruments 2.5 million/s (JMH on a laptop).',
+        pl: 'Trzy gry na jednym silniku: Czwórki, Klejnoty i Mozaika. Mozaika weszła bez zmiany ani jednej linii silnika, botów i serwera — pilnuje tego CI.',
+        en: 'Three games on one engine: Connect Four, Klejnoty and Mozaika. Mozaika was added without changing a single line of the engine, bots or server — CI enforces it.',
       },
       {
-        pl: 'Pełna droga HTTP → silnik → baza → Kafka przy 1000 zleceń/s odpowiada w 2,5 ms (mediana, k6).',
-        en: 'The full HTTP → engine → database → Kafka path answers in 2.5 ms at 1,000 orders/s (median, k6).',
+        pl: 'Wyniki są powtarzalne: to samo ziarno daje tę samą partię niezależnie od liczby wątków, a powtórka z bazy odtwarza partię co do bitu.',
+        en: 'Results are reproducible: the same seed gives the same game regardless of thread count, and a replay from the database rebuilds the game bit for bit.',
       },
       {
-        pl: 'Testy mutacyjne wyłapują 93% celowo wprowadzonych błędów, a 30 000 losowych zleceń daje te same zdarzenia co niezależna implementacja-wyrocznia.',
-        en: 'Mutation testing catches 93% of deliberately injected bugs, and 30,000 random orders produce the same events as an independent reference implementation.',
+        pl: 'Ponad 1400 testów, a testy mutacyjne wyłapują 94–99% celowo wprowadzonych błędów w każdym module.',
+        en: 'Over 1,400 tests, and mutation testing catches 94–99% of deliberately injected bugs in every module.',
       },
     ],
     about: {
-      pl: 'Projekt pokazujący, jak buduje się system, w którym liczy się każda milisekunda i każdy grosz. Cena na tej giełdzie nie przychodzi z zewnątrz — to cena ostatniej transakcji, czyli moment, w którym czyjeś kupno spotkało się z czyjąś sprzedażą. Gdy baza nie nadąża, giełda zwalnia zamiast gubić zdarzenia, a metryki w Grafanie pokazują, gdzie dokładnie się korkuje. Kod jest otwarty, z opisem architektury i wynikami pomiarów. Demo na stronie odtwarza nagraną sesję giełdy z botami, a zlecenia składane w przeglądarce są symulowane.',
-      en: 'A project that shows how to build a system where every millisecond and every grosz counts. The price on this exchange does not come from outside — it is the price of the last trade, the moment someone’s buy met someone’s sell. When the database falls behind, the exchange slows down instead of losing events, and Grafana dashboards show exactly where the bottleneck is. The code is open, with the architecture described and the benchmarks published. The demo replays a recorded exchange session with bots, and orders placed in the browser are simulated.',
+      pl: 'Narzędzie dla projektantów i wydawców gier planszowych. Zamiast dziesiątek wieczorów testowania przy stole projektant podpina zasady gry, a boty rozgrywają tysiące partii i mówią, co trzeba poprawić — zanim gra trafi do druku. Demo na stronie działa w całości w przeglądarce: ten sam serwer gry skompilowany do WebAssembly, więc można od razu zagrać z botem we wszystkie trzy gry i obejrzeć gotowe wyniki laboratorium.',
+      en: 'A tool for board game designers and publishers. Instead of dozens of evenings of playtesting at the table, the designer plugs in the rules, and bots play thousands of games and point out what needs fixing — before the game goes to print. The demo on this site runs entirely in the browser: the same game server compiled to WebAssembly, so you can play all three games against a bot straight away and browse ready-made lab results.',
     },
-    liveUrl: '/parkiet/',
-    repoUrl: 'https://github.com/Sitkowski01/parkiet-exchange',
+    liveUrl: '/balance-lab/',
+    repoUrl: 'https://github.com/Sitkowski01/boardgame-balance-lab',
   },
   {
     id: 'mk-cycling',

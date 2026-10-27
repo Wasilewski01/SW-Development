@@ -78,7 +78,7 @@ const FEATURES: Feature[] = [
     label: { pl: 'Na żywo', en: 'Real-time' },
     desc: { pl: 'Czat i statusy bez odświeżania.', en: 'Chat and statuses without refreshing.' },
     tech: ['Socket.IO', 'Redis'],
-    proof: ['parkiet', 'service-reports', 'party-game'],
+    proof: ['balance-lab', 'service-reports', 'party-game'],
     weight: 2,
   },
   {
