@@ -1,0 +1,23 @@
+FallbackResource disabled
+<IfModule mod_headers.c>
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /balance-lab/_framework/
+    RewriteCond %{HTTP:Accept-Encoding} br
+    RewriteCond %{REQUEST_FILENAME}.br -f
+    RewriteRule ^(.+)\.wasm$ $1.wasm.br [T=application/wasm,L]
+    RewriteCond %{HTTP:Accept-Encoding} br
+    RewriteCond %{REQUEST_FILENAME}.br -f
+    RewriteRule ^(.+)\.dat$ $1.dat.br [T=application/octet-stream,L]
+  </IfModule>
+  <FilesMatch "\.br$">
+    Header set Content-Encoding br
+    Header append Vary Accept-Encoding
+  </FilesMatch>
+  <FilesMatch "\.wasm\.br$">
+    ForceType application/wasm
+  </FilesMatch>
+  <FilesMatch "\.dat\.br$">
+    ForceType application/octet-stream
+  </FilesMatch>
+</IfModule>

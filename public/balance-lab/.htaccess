@@ -1,0 +1,2 @@
+FallbackResource /balance-lab/index.html
+AddType application/wasm .wasm
