@@ -3,7 +3,6 @@ import shotClinic from './img/clinic-calendar.webp'
 import shotTraining from './img/training-reports.webp'
 import shotGame from './img/party-game.webp'
 import shotChartScanner from './img/chart-scanner.webp'
-import shotMkCycling from './img/mkcycling.webp'
 import shotPixelBites from './img/pixel-bites.webp'
 import shotRestaurantSystem from './img/restaurant-system.webp'
 import shotBistro from './img/bistro.webp'
@@ -413,48 +412,6 @@ export const projects: Project[] = [
     },
     liveUrl: '/balance-lab/',
     repoUrl: 'https://github.com/Sitkowski01/boardgame-balance-lab',
-  },
-  {
-    id: 'mk-cycling',
-    name: { pl: 'MK Cycling — strona trenera kolarstwa', en: 'MK Cycling — cycling coach site' },
-    category: 'landing',
-    year: '2026',
-    image: shotMkCycling,
-    tagline: {
-      pl: 'Strona dla trenera kolarstwa szosowego, która ma zamieniać odwiedzających w podopiecznych.',
-      en: 'A site for a road cycling coach, built to turn visitors into athletes on his plan.',
-    },
-    role: { pl: 'Projekt i wdrożenie dla klienta', en: 'Design & build for a client' },
-    stack: ['React + Vite', 'TypeScript', 'Framer Motion', 'Cloudflare Turnstile', 'Google Tag Manager', 'Schema.org'],
-    highlights: [
-      {
-        pl: 'Realizacja dla prawdziwego klienta: trenera Marcina Karbowego z Poznania.',
-        en: 'Built for a real client: coach Marcin Karbowy from Poznań.',
-      },
-      {
-        pl: 'Formularz kontaktowy chroniony przez Cloudflare Turnstile zamiast uciążliwej CAPTCHY.',
-        en: 'A contact form protected by Cloudflare Turnstile instead of an annoying CAPTCHA.',
-      },
-      {
-        pl: 'Analityka w trybie zgody (Consent Mode): nic nie jest mierzone, dopóki odwiedzający nie zaakceptuje plików cookies.',
-        en: 'Analytics in Consent Mode: nothing is measured until the visitor accepts cookies.',
-      },
-    ],
-    results: [
-      {
-        pl: 'Strona prowadzi odwiedzającego prosto do kontaktu w sprawie planu treningowego.',
-        en: 'The site leads visitors straight to getting in touch about a training plan.',
-      },
-      {
-        pl: 'Przygotowana pod lokalne wyszukiwanie w Google i zgodna z RODO.',
-        en: 'Set up for local Google search and GDPR-compliant.',
-      },
-    ],
-    about: {
-      pl: 'Strona wizytówka trenera kolarstwa szosowego, który układa indywidualne plany treningowe. Ton i wygląd są podporządkowane jednemu celowi: przekonać kolarza amatora, że trening pod jego pracę i rodzinę da lepsze wyniki niż kopiowanie gotowych planów. Pod spodem zadbaliśmy o rzeczy, których klient nie widzi, a które decydują o wynikach w Google: szybkie ładowanie głównego zdjęcia, dane strukturalne dla lokalnego wyszukiwania i zgodność z RODO.',
-      en: 'A showcase site for a road cycling coach who writes individual training plans. The tone and look serve one goal: convincing an amateur cyclist that training built around their job and family beats copying ready-made plans. Underneath, we took care of what the client never sees but what decides Google rankings: a fast-loading hero image, structured data for local search and GDPR compliance.',
-    },
-    liveUrl: 'https://mkcycling.pl/',
   },
   {
     id: 'pixel-bites',
