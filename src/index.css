@@ -402,3 +402,9 @@ body::before {
     display: none;
   }
 }
+
+/* Okna dialogowe: ten sam odcień co --color-surface, ale nieprzezroczysty.
+   Półprzezroczysta powierzchnia (szkło na kartach) w oknie nad stroną przepuszczała jasne elementy z tła. */
+.surface-solid {
+  background: linear-gradient(var(--color-surface), var(--color-surface)), var(--color-canvas);
+}

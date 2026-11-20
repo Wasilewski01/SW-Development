@@ -1941,7 +1941,7 @@ function CaseStudy({
         role="dialog"
         aria-modal="true"
         aria-label={p.name[lang]}
-        className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl bg-[var(--color-surface)] shadow-2xl sm:rounded-2xl"
+        className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl surface-solid shadow-2xl sm:rounded-2xl"
         style={{ animation: 'tour-pop 0.35s cubic-bezier(0.22,1,0.36,1)' }}
       >
         {/* The screenshot scrolls with the text instead of being capped at a fixed
@@ -2228,7 +2228,7 @@ function ContactDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-form-title"
-        className="relative flex max-h-[92vh] w-full max-w-md flex-col overflow-y-auto rounded-t-2xl bg-[var(--color-surface)] p-6 shadow-2xl sm:rounded-2xl sm:p-9"
+        className="relative flex max-h-[92vh] w-full max-w-md flex-col overflow-y-auto rounded-t-2xl surface-solid p-6 shadow-2xl sm:rounded-2xl sm:p-9"
         style={{ animation: 'tour-pop 0.3s cubic-bezier(0.22,1,0.36,1)' }}
       >
         <button
@@ -2372,7 +2372,7 @@ function PrivacyDialog({ lang, onClose }: { lang: Lang; onClose: () => void }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="privacy-title"
-        className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-y-auto rounded-t-2xl bg-[var(--color-surface)] p-6 shadow-2xl backdrop-blur-xl sm:rounded-2xl sm:p-9"
+        className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-y-auto rounded-t-2xl surface-solid p-6 shadow-2xl backdrop-blur-xl sm:rounded-2xl sm:p-9"
         style={{ animation: 'tour-pop 0.3s cubic-bezier(0.22,1,0.36,1)' }}
       >
         <button
