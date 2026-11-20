@@ -16,6 +16,7 @@ import {
   type StackItem,
   type TeamMember,
   categories,
+  makers,
   projects,
   t,
   services,
@@ -2076,14 +2077,14 @@ function CaseStudy({
             </div>
 
             {/* Who made it: the team member's credit and a direct line to them */}
-            {p.madeBy === 'mikolaj' && (
+            {p.madeBy && (
               <p className="mt-4 text-center text-xs leading-relaxed text-[var(--color-ink-faint)]">
-                {lang === 'pl' ? 'Projekt i wykonanie' : 'Design & build'}: Mikołaj Sitek, SWN Development ·{' '}
+                {lang === 'pl' ? 'Projekt i wykonanie' : 'Design & build'}: {makers[p.madeBy].name}, SWN Development ·{' '}
                 <a
-                  href="mailto:mikolaj@swndevelopment.pl"
+                  href={`mailto:${makers[p.madeBy].email}`}
                   className="underline underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
                 >
-                  mikolaj@swndevelopment.pl
+                  {makers[p.madeBy].email}
                 </a>
               </p>
             )}

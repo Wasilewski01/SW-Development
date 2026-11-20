@@ -47,8 +47,14 @@ export type Project = {
   liveUrl?: string
   repoUrl?: string
   /** Team member who designed and built it; the project card shows their credit and contact. */
-  madeBy?: 'mikolaj'
+  madeBy?: keyof typeof makers
 }
+
+/** Who designed and built a project, as credited on its card. */
+export const makers = {
+  mikolaj: { name: 'Mikołaj Sitek', email: 'mikolaj@swndevelopment.pl' },
+  jakub: { name: 'Jakub Wasilewski', email: 'kuba@swndevelopment.pl' },
+} as const
 
 export const categories: { key: 'all' | Project['category']; label: LS }[] = [
   { key: 'all', label: { pl: 'Wszystko', en: 'All' } },
@@ -64,6 +70,7 @@ const img = (id: string, w = 900, h = 640) =>
 export const projects: Project[] = [
   {
     id: 'clinic-calendar',
+    madeBy: 'jakub',
     name: { pl: 'Kalendarz gabinetu', en: 'Clinic calendar' },
     category: 'mobile',
     year: '2026',
@@ -201,6 +208,7 @@ export const projects: Project[] = [
   },
   {
     id: 'training-reports',
+    madeBy: 'jakub',
     name: { pl: 'Generator raportów treningowych', en: 'Training report generator' },
     category: 'web',
     year: '2026',
@@ -243,6 +251,7 @@ export const projects: Project[] = [
   },
   {
     id: 'service-reports',
+    madeBy: 'jakub',
     name: { pl: 'System raportów serwisowych', en: 'Field service reports' },
     category: 'web',
     year: '2026',
@@ -289,6 +298,7 @@ export const projects: Project[] = [
   },
   {
     id: 'party-game',
+    madeBy: 'jakub',
     name: { pl: 'Gra towarzyska online', en: 'Online party game' },
     category: 'web',
     year: '2026',
@@ -331,6 +341,7 @@ export const projects: Project[] = [
   },
   {
     id: 'course-platform',
+    madeBy: 'jakub',
     name: { pl: 'Platforma sprzedaży kursów', en: 'Course sales platform' },
     category: 'commerce',
     year: '2026',
