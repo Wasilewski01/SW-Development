@@ -2075,6 +2075,19 @@ function CaseStudy({
               )}
             </div>
 
+            {/* Who made it: the team member's credit and a direct line to them */}
+            {p.madeBy === 'mikolaj' && (
+              <p className="mt-4 text-center text-xs leading-relaxed text-[var(--color-ink-faint)]">
+                {lang === 'pl' ? 'Projekt i wykonanie' : 'Design & build'}: Mikołaj Sitek, SWN Development ·{' '}
+                <a
+                  href="mailto:mikolaj@swndevelopment.pl"
+                  className="underline underline-offset-2 transition-colors hover:text-[var(--color-ink)]"
+                >
+                  mikolaj@swndevelopment.pl
+                </a>
+              </p>
+            )}
+
             {/* Read on: the next project, like the next article at the foot of a page */}
             {list.length > 1 && (
               <button
